@@ -10,7 +10,7 @@ _Status: Phase 0 draft, awaiting approval_
 | **1** Foundation | Next.js + TS + Tailwind + shadcn, tokens, fonts, header/footer/mobile nav, env validation, CI, git repo | `feat: initialize Next.js application`, `feat: add design system`, `feat: add site layout and navigation`, `ci: add GitHub Actions` | Review the visual foundation in the browser |
 | **2** Marketing pages | Home, Solutions, How We Work, About, Contact (UI and validation; submit is stubbed), Privacy | one commit per page | Review copy and layout |
 | **3** Portfolio | Project types, card, detail template, CompanyBrainAI, case-study template (unlisted) | `feat: add portfolio system` | Needs CompanyBrainAI material |
-| **4** AI demo | Provider abstraction, analyzer, route, UI, cached examples, guardrails | `feat: add AI business problem demo` | Needs an OpenAI key with a budget cap |
+| **4** AI demo | Provider abstraction, analyzer, route, UI, cached examples, guardrails | `feat: add AI business problem demo` | Needs a free Gemini API key (no billing attached) |
 | **5** Supabase | Migrations + RLS, lead storage, Resend notification, admin auth, leads dashboard | `feat: add lead storage`, `feat: add admin dashboard` | **Architecture gate** (security model) |
 | **6** Hardening | SEO (JSON-LD, sitemap, OG), CSP/security headers, a11y audit, Lighthouse, error/empty states | | |
 | **7** Testing | Playwright flows, mobile device testing, API-failure simulation | | |
@@ -20,24 +20,23 @@ A preview deployment (free) is set up in Phase 1, so every phase can be reviewed
 
 ## 14. Cost considerations
 
+**Decision (2026-10-02): free-only.** No paid services. The only unavoidable cost is a domain name, and even that can wait until launch.
+
 | Item | Choice | Cost | Notes |
 |---|---|---|---|
-| Hosting | Vercel | Hobby: free / **Pro: $20/mo** | ⚠️ **Vercel Hobby's terms prohibit commercial use.** A company website counts as commercial. See the decision below |
-| Database/Auth | Supabase Free | ₹0 | 500MB DB. ⚠️ Free projects **pause after 7 days of inactivity**; mitigated below |
-| AI | OpenAI, small model | ~$1–6/mo | Hard monthly budget cap in the OpenAI dashboard (e.g. $10) |
+| Hosting | **Netlify Free** | ₹0 | Commercial use allowed. Zero-config Next.js support. Fallback: Cloudflare Workers Free (OpenNext). Vercel Hobby was rejected because its terms prohibit commercial use |
+| Database/Auth | Supabase Free | ₹0 | 500MB DB. Free projects pause after 7 days of inactivity; mitigated below |
+| AI | Google Gemini API free tier | ₹0 | No billing account attached, so no charges are possible. Groq free tier as fallback |
 | Email notifications | Resend Free | ₹0 | 3,000/mo, 100/day |
-| Domain | `.com` | ~₹1,000/yr | Needed. Cloudflare Registrar sells at cost |
-| Business email | Zoho Mail Free (up to 5 users) **or** Google Workspace (~₹140+/user/mo) | ₹0 or ~₹1,700/yr | A `@mithilaweblabs…` address matters for credibility |
+| Domain | `.com` | ~₹1,000/yr (optional until launch) | Until then: free `*.netlify.app` subdomain |
+| Business email | Zoho Mail Forever Free (needs the domain) or Cloudflare Email Routing (free forwarding) | ₹0 | |
 | DNS/CDN | Cloudflare Free | ₹0 | |
 | CI | GitHub Actions | ₹0 | |
-| Monitoring/analytics | none at launch | ₹0 | PostHog/Sentry free tiers later |
+| Monitoring/analytics | none at launch | ₹0 | Sentry/PostHog free tiers later |
 
-**Hosting decision (needs your call):**
-1. **Vercel Pro, $20/mo (recommended at launch).** Best Next.js support and ToS-compliant. Develop on Hobby for free until go-live.
-2. **Netlify Free or Cloudflare Workers (OpenNext adapter).** Free and commercial use is allowed, but there is slightly more setup and occasional Next.js feature lag.
-3. **AWS Amplify.** Free tier for 12 months, then usage-based (~$1–5/mo at this scale). More setup.
+**Running cost: ₹0/month** (plus ~₹1,000/year for a domain once you want one).
 
-Expected running cost: **~₹1,000–2,500/month** with option 1, or **~₹100–500/month** with option 2.
+Free-tier limits to watch: Netlify's monthly usage credits (builds and bandwidth), Gemini's daily request quota, and Resend's 100 emails/day. All are far above what a new company site needs.
 
 ## 15. Risks & assumptions
 
@@ -45,7 +44,7 @@ Expected running cost: **~₹1,000–2,500/month** with option 1, or **~₹100�
 | Risk | Impact | Mitigation |
 |---|---|---|
 | Supabase free project pauses, so the contact form fails | **Lost leads** | (a) The lead email is sent *independently* of the DB insert, so a DB failure still emails the founder. (b) A weekly GitHub Actions keep-alive ping. (c) The form error state shows a direct email/WhatsApp fallback |
-| AI demo abuse / runaway cost | Bills | Layered caps + provider budget limit (see ai-architecture.md) |
+| AI demo abuse / quota exhaustion | Demo unavailable (no bills: free tier, no billing) | Layered caps + provider budget limit (see ai-architecture.md) |
 | AI gives a poor or odd suggestion on a public site | Credibility | Schema-constrained output, tested prompt, disclaimer, cached curated examples as the default path |
 | Spam on contact form | Noise | Honeypot + rate limit; add Cloudflare Turnstile (free) only if spam appears |
 | Portfolio looks thin (one project) | Credibility | Present depth over breadth: a detailed CompanyBrainAI write-up with architecture beats five shallow cards. Mark future projects "In development" only if work has actually started |
@@ -60,11 +59,10 @@ Expected running cost: **~₹1,000–2,500/month** with option 1, or **~₹100�
 4. The founder is the single admin user.
 5. The domain is not yet decided (I'll use `NEXT_PUBLIC_SITE_URL` everywhere).
 6. Company location is shown as a city in India. The UAE presence is phrased as "serving clients in India and the UAE" only once that is true.
-7. OpenAI is the provider for now, as specified in the brief.
+7. Free-only: the Gemini free tier replaces OpenAI (no free API tier), and Netlify replaces Vercel.
 
 ### Information needed from you (not blocking Phase 1)
 - Domain name and preferred contact email; WhatsApp number for click-to-chat
 - CompanyBrainAI: current state, screenshots, actual stack, and features that really work
 - Founder name, short bio, photo (optional), LinkedIn
 - City/location to display; whether the company is registered (for footer/legal)
-- Hosting choice (above)

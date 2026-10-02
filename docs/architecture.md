@@ -10,7 +10,7 @@ One Next.js application. No separate backend, no microservices.
 Browser
   │  (static/SSR HTML, minimal client JS)
   ▼
-Next.js app (App Router, TypeScript)  ── hosted on Vercel (portable to AWS/Cloudflare)
+Next.js app (App Router, TypeScript)  ── hosted on Netlify Free (portable to Cloudflare/AWS/any Node host)
   ├─ Marketing pages      → statically generated (SSG), content from typed files in /src/content
   ├─ Server Action        → submitLead()        → Zod validate → rate limit → Supabase insert → email notify
   ├─ Route Handler        → POST /api/ai-demo   → Zod validate → rate limit → AI service → Supabase log
@@ -18,7 +18,7 @@ Next.js app (App Router, TypeScript)  ── hosted on Vercel (portable to AWS/C
   └─ sitemap.ts / robots.ts / opengraph-image.tsx
           │                         │                     │
           ▼                         ▼                     ▼
-     Supabase (Postgres + Auth)   AI provider (OpenAI)   Resend (lead email)
+     Supabase (Postgres + Auth)   AI provider (Gemini free tier)   Resend (lead email)
 ```
 
 ### Stack (current stable versions are confirmed at Phase 1 setup)
@@ -29,7 +29,7 @@ Next.js app (App Router, TypeScript)  ── hosted on Vercel (portable to AWS/C
 | Validation | Zod | One schema per form, shared by client and server; the server re-validates every time |
 | Forms | React Hook Form + Zod resolver (contact form only) | Small and accessible |
 | DB / Auth | Supabase (`@supabase/ssr`) | Free tier |
-| AI | OpenAI via our own `AIProvider` interface | Provider can be swapped by changing one file and one env variable |
+| AI | Google Gemini API (free tier) via our own `AIProvider` interface | Provider can be swapped (OpenAI, Groq, Anthropic…) by adding one file and changing one env variable |
 | Email | Resend (free tier: 3,000 emails/month) | Lead notifications only |
 | Icons | lucide-react | Tree-shaken |
 | Fonts | `next/font` self-hosted | No requests to Google at runtime |
@@ -41,7 +41,7 @@ Next.js app (App Router, TypeScript)  ── hosted on Vercel (portable to AWS/C
 1. **Business logic lives in `src/services`, never in components.** Components call services through server actions or route handlers.
 2. **Secrets are server-only.** Modules that touch secrets import `server-only`, so a build fails if client code imports them.
 3. **Content is data.** Portfolio projects, solutions, and process steps are typed objects in `src/content`. Moving them to a Supabase table later only means changing the loader, not the UI.
-4. **Portable to AWS.** No Vercel-only APIs (no Edge Config, Vercel KV, etc.). The app runs on any Node host (`next build && next start`, or Docker / Amplify / OpenNext).
+4. **Portable.** No host-specific APIs (no Edge Config, Vercel KV, etc.). The app runs on any Node host (`next build && next start`, or Docker / Amplify / OpenNext).
 
 ## 12. Initial folder structure
 
@@ -78,7 +78,7 @@ weblabs/
 │  │  └─ admin/                 LeadsTable, StatusSelect
 │  ├─ content/                  solutions.ts, process.ts, problems.ts, projects/companybrain-ai.ts
 │  ├─ services/
-│  │  ├─ ai/                    provider.ts (interface), openai-provider.ts, business-analyzer.ts, prompts/
+│  │  ├─ ai/                    provider.ts (interface), gemini-provider.ts, business-analyzer.ts, prompts/
 │  │  ├─ leads/                 create-lead.ts, list-leads.ts, update-lead.ts
 │  │  ├─ notifications/         lead-email.ts
 │  │  └─ rate-limit.ts
@@ -105,8 +105,8 @@ weblabs/
 | `NEXT_PUBLIC_SUPABASE_URL` | public | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | public | Anon/publishable key (safe because RLS is enforced) |
 | `SUPABASE_SECRET_KEY` | **server only** | Server-side inserts (leads, demo logs). Never sent to the browser |
-| `AI_PROVIDER` | server | `openai` (default); enables swapping providers |
-| `OPENAI_API_KEY` | **server only** | AI demo |
+| `AI_PROVIDER` | server | `gemini` (default); enables swapping providers |
+| `GEMINI_API_KEY` | **server only** | AI demo (free key from Google AI Studio) |
 | `AI_MODEL` | server | A small, cheap model, changeable without a code change |
 | `AI_DEMO_MAX_PER_IP_PER_HOUR` | server | e.g. `5` |
 | `AI_DEMO_MAX_PER_DAY` | server | Global cost ceiling, e.g. `200` |

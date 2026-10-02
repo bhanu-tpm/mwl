@@ -79,7 +79,7 @@ _Status: Phase 0 draft, awaiting approval_
 | Arabic / RTL, multi-language | No UAE traffic yet | Active UAE pipeline. We will use logical CSS properties now so RTL is cheap later |
 | Dark mode | Not a conversion driver | Post-launch polish |
 | Analytics (PostHog) | Keep the first launch free of third-party scripts | Once there is meaningful traffic |
-| Sentry | Vercel/host logs are enough at low volume | First production incident or more than 1 paid project |
+| Sentry | Host logs are enough at low volume | First production incident or more than 1 paid project |
 | Full CRM, pipeline boards, email sequences | Over-engineering for under 20 leads | Lead volume above ~20/month |
 | Booking calendar (Cal.com) | A simple link is enough | Can be added as a link at any time (free) |
 | Chatbot / RAG on site content | Novelty, not conversion | Later, as a CompanyBrainAI demo |

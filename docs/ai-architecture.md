@@ -5,7 +5,7 @@ _Status: Phase 0 draft, awaiting approval_
 ## 9. Goals
 1. Show useful AI for business problems in under 10 seconds.
 2. Never expose keys, never allow unbounded spend.
-3. Make the provider replaceable (OpenAI today; Anthropic, Gemini, or a local model later).
+3. Make the provider replaceable. **Free-only constraint (decided 2026-10-02):** start with the Google Gemini API free tier; OpenAI/Anthropic can be added later as another provider file.
 
 ## Provider abstraction
 
@@ -23,7 +23,8 @@ export interface AIProvider {
 }
 ```
 
-- `openai-provider.ts` implements the interface using OpenAI structured outputs (JSON schema derived from Zod).
+- `gemini-provider.ts` implements the interface using Gemini structured output (JSON schema derived from Zod).
+- Free-tier caveats: Google may use free-tier prompts to improve its products (disclosed in the privacy policy, and users are told not to enter confidential data), and free-tier rate limits apply. Our own daily cap stays below them. Groq's free tier is the fallback provider.
 - `getProvider()` selects the provider from `AI_PROVIDER`. The model comes from `AI_MODEL`.
 - Feature code (`business-analyzer.ts`) knows only the interface, never the vendor SDK.
 - Prompts live in `services/ai/prompts/` as versioned constants (`BUSINESS_ANALYZER_V1`). The prompt version is logged with each run.
@@ -60,7 +61,7 @@ POST /api/ai-demo { input }
 ## Safety & guardrails
 - **Prompt injection:** the system prompt fixes the task. User input is enclosed in delimiters and treated as data, and the schema-constrained output means the model can only return the demo shape. A no-tools, no-retrieval design means there is nothing to exfiltrate.
 - **Off-topic or abusive input** returns `isBusinessProblem: false`, which shows a neutral message. The provider's moderation endpoint (free) runs before the main call.
-- **Spend:** per-IP limit + global daily cap + output token cap + **a hard monthly budget limit set in the OpenAI dashboard** (the final backstop).
+- **Spend:** per-IP limit + global daily cap + output token cap + **no billing account attached to the Gemini key**, so the free tier can never incur charges (the final backstop).
 - **Disclaimer:** shown on every result: *"AI-generated suggestion for illustration only, not professional consulting advice."*
 - **Privacy:** the UI tells users not to enter confidential information. IPs are hashed. Logs are deleted after 90 days.
 
@@ -73,7 +74,7 @@ POST /api/ai-demo { input }
 | Not a business problem | "Try describing a process your team does manually…" with examples |
 
 ## Model choice
-Use the provider's current small, low-cost model (configured via `AI_MODEL`). Estimated cost: roughly **$0.001 or less per run**, so even 200 runs/day costs about $6/month at most. The model is chosen at Phase 4 time based on current pricing.
+Use the provider's current free-tier "flash"-class model (configured via `AI_MODEL`). **Cost: ₹0.** When the free quota runs out the demo shows its friendly "busy" state, and the cached examples keep working.
 
 ## Later reuse
 The same `AIProvider` interface carries over to CompanyBrainAI demos and client projects, which makes it the start of a reusable internal toolkit.
