@@ -63,7 +63,7 @@ export function WorkflowChain({
           >
             <div
               className={cn(
-                "flex items-center gap-3 rounded-lg border px-3 py-2.5 text-sm",
+                "flex items-center gap-3 rounded-xl border px-3.5 py-3 text-sm shadow-[0_1px_2px_rgb(20_20_19/0.04)]",
                 style.className,
               )}
             >

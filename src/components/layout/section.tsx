@@ -2,14 +2,13 @@ import { cn } from "@/lib/utils";
 import { Container } from "./container";
 
 type SectionProps = React.ComponentProps<"section"> & {
-  tone?: "default" | "muted" | "deep";
+  tone?: "default" | "muted";
   containerClassName?: string;
 };
 
 const tones = {
   default: "",
-  muted: "bg-muted",
-  deep: "bg-deep text-deep-foreground",
+  muted: "bg-muted/60 border-y",
 };
 
 /** Page section with consistent vertical rhythm. */
@@ -22,11 +21,21 @@ export function Section({
 }: SectionProps) {
   return (
     <section
-      className={cn("py-16 sm:py-24 lg:py-28", tones[tone], className)}
+      className={cn("py-20 sm:py-28 lg:py-32", tones[tone], className)}
       {...props}
     >
       <Container className={containerClassName}>{children}</Container>
     </section>
+  );
+}
+
+/** Eyebrow with a small vermilion marker, e.g. "■ 01 — The problem". */
+export function Eyebrow({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <p className={cn("eyebrow flex items-center gap-2.5", className)}>
+      <span aria-hidden="true" className="size-1.5 rounded-[1px] bg-brand" />
+      {children}
+    </p>
   );
 }
 
@@ -46,13 +55,13 @@ export function SectionHeader({
   as: Heading = "h2",
 }: SectionHeaderProps) {
   return (
-    <div className={cn("max-w-2xl", className)}>
-      {eyebrow && <p className="eyebrow mb-4">{eyebrow}</p>}
+    <div className={cn("max-w-3xl", className)}>
+      {eyebrow && <Eyebrow className="mb-5">{eyebrow}</Eyebrow>}
       <Heading className={Heading === "h1" ? "text-display" : "text-h2"}>
         {title}
       </Heading>
       {description && (
-        <p className="text-lead mt-5 text-muted-foreground">{description}</p>
+        <p className="text-lead mt-6 max-w-2xl text-muted-foreground">{description}</p>
       )}
     </div>
   );

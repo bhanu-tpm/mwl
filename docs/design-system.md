@@ -1,6 +1,15 @@
 # Design Direction
 
-_Status: Phase 0 draft, awaiting approval_
+_Status: implemented (premium pass, 2026-10-02)_
+
+## Premium pass (2026-10-02)
+- **Ink bands:** a warm near-black (`--ink` #0f0f0e) frames the site: header, hero and page intros, the closing CTA, and the footer. Light content sections sit in between.
+- **Serif accent:** Instrument Serif italic (`accent-serif`) is used for one or two words per heading only.
+- **Elevated cards** (`card-elevated`, `card-hover`): hairline ring, soft shadow, 1rem radius, 2px hover lift.
+- **Texture:** a faint 64px grid (`bg-grid-ink`) and a single blurred vermilion glow per ink band. No other gradients.
+- **Pill buttons** for large CTAs. `outline-ink` is the secondary button on dark backgrounds.
+- **Small vermilion text on ink** uses `--brand-on-ink` (#f2895c) to keep 4.5:1 contrast.
+- The navy `--deep` token was removed.
 
 ## 10. Principles
 - **Editorial, not "AI startup".** Lots of whitespace, strong typography, real content as the visual.

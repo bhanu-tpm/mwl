@@ -33,8 +33,17 @@
 
   --brand: #c2410c;
   --brand-foreground: #ffffff;
-  --deep: #1e2a44;
-  --deep-foreground: #f4f3ee;
+  /* Ink: warm near-black used for the header, hero bands, CTA, and footer. */
+  --ink: #0f0f0e;
+  --ink-foreground: #f5f4ef;
+  --ink-muted: #a3a29a;
+  --ink-border: rgb(255 255 255 / 0.1);
+  --ink-surface: rgb(255 255 255 / 0.04);
+  /* Lighter vermilion for small text on ink (≥ 4.5:1). */
+  --brand-on-ink: #f2895c;
+
+  --shadow-card: 0 1px 2px rgb(20 20 19 / 0.04), 0 8px 24px -12px rgb(20 20 19 / 0.1);
+  --shadow-card-hover: 0 1px 2px rgb(20 20 19 / 0.05), 0 18px 40px -16px rgb(20 20 19 / 0.18);
 }
 
 @theme inline {
@@ -58,12 +67,17 @@
   --color-ring: var(--ring);
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
-  --color-deep: var(--deep);
-  --color-deep-foreground: var(--deep-foreground);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-border: var(--ink-border);
+  --color-ink-surface: var(--ink-surface);
+  --color-brand-on-ink: var(--brand-on-ink);
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-heading: var(--font-sans);
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -73,6 +87,14 @@
 }
 
 /* Fluid type scale */
+@utility text-display-xl {
+  font-size: clamp(2.6rem, 1.5rem + 4.6vw, 5.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
 @utility text-display {
   font-size: clamp(2.25rem, 1.4rem + 3.6vw, 4.5rem);
   line-height: 1.04;
@@ -82,9 +104,9 @@
 }
 
 @utility text-h2 {
-  font-size: clamp(1.75rem, 1.35rem + 1.6vw, 2.75rem);
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  font-size: clamp(2rem, 1.35rem + 2.4vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
   font-weight: 600;
   text-wrap: balance;
 }
@@ -102,6 +124,38 @@
   text-wrap: pretty;
 }
 
+/* Serif italic accent for a word or two inside sans headings. */
+@utility accent-serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Elevated surface used for cards. */
+@utility card-elevated {
+  background: var(--card);
+  border-radius: 1rem;
+  box-shadow: 0 0 0 1px rgb(20 20 19 / 0.07), var(--shadow-card);
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+@utility card-hover {
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px rgb(20 20 19 / 0.1), var(--shadow-card-hover);
+  }
+}
+
+/* Faint grid texture for ink bands, fading out towards the edges. */
+@utility bg-grid-ink {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, black 30%, transparent 100%);
+}
+
 /* Small mono label used above headings ("01 — What we build") */
 @utility eyebrow {
   font-family: var(--font-mono);
@@ -109,7 +163,8 @@
   line-height: 1rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted-foreground);
+  /* Adapts to light and ink backgrounds. */
+  color: color-mix(in oklab, currentColor 62%, transparent);
 }
 
 @layer base {
@@ -133,6 +188,13 @@
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  .animate-rise {
+    animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
   @media (prefers-reduced-motion: reduce) {
     *,

@@ -22,7 +22,12 @@ export function MobileNav() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon-lg" className="md:hidden" aria-label="Open menu">
+        <Button
+          variant="ghost"
+          size="icon-lg"
+          className="text-ink-foreground hover:bg-ink-surface hover:text-ink-foreground aria-expanded:bg-ink-surface aria-expanded:text-ink-foreground md:hidden"
+          aria-label="Open menu"
+        >
           <MenuIcon className="size-5" />
         </Button>
       </SheetTrigger>

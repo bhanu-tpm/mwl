@@ -17,7 +17,7 @@ export default function HowWeWorkPage() {
     <>
       <PageHero
         eyebrow="How we work"
-        title="Simple process. Working software early. No surprises."
+        title={<>Simple process. Working software early. <span className="accent-serif">No surprises.</span></>}
         description="We start with your business, not with technology. You see a working prototype before full development, and progress every one to two weeks after that."
       />
 
@@ -26,13 +26,13 @@ export default function HowWeWorkPage() {
           {engagementSteps.map((step, i) => (
             <li
               key={step.title}
-              className="grid gap-6 rounded-xl border bg-card p-6 sm:p-8 md:grid-cols-[minmax(0,14rem)_1fr_1fr] md:gap-10"
+              className="card-elevated grid gap-6 p-7 sm:p-10 md:grid-cols-[minmax(0,15rem)_1fr_1fr] md:gap-12"
             >
               <div>
-                <span className="font-mono text-xs text-brand">
-                  Step {String(i + 1).padStart(2, "0")}
+                <span className="accent-serif text-5xl leading-none text-brand">
+                  {String(i + 1).padStart(2, "0")}
                 </span>
-                <h2 className="text-h3 mt-2 text-2xl">{step.title}</h2>
+                <h2 className="mt-4 text-2xl font-semibold tracking-tight">{step.title}</h2>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {step.summary}
                 </p>

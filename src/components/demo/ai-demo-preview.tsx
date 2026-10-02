@@ -26,13 +26,13 @@ const example = {
 
 export function AiDemoPreview() {
   return (
-    <div className="grid overflow-hidden rounded-xl border bg-card lg:grid-cols-2">
-      <div className="border-b p-6 sm:p-8 lg:border-e lg:border-b-0">
+    <div className="card-elevated grid overflow-hidden lg:grid-cols-2">
+      <div className="border-b p-7 sm:p-10 lg:border-e lg:border-b-0">
         <p className="eyebrow flex items-center gap-2">
           <MessageSquareTextIcon aria-hidden="true" className="size-3.5" />
           Business problem
         </p>
-        <blockquote className="mt-4 rounded-lg bg-muted p-5 text-lg leading-relaxed">
+        <blockquote className="mt-5 rounded-2xl rounded-tl-sm bg-ink p-6 text-lg leading-relaxed text-ink-foreground">
           &ldquo;{example.input}&rdquo;
         </blockquote>
         <dl className="mt-8 space-y-5 text-sm">
@@ -59,7 +59,7 @@ export function AiDemoPreview() {
           </div>
         </dl>
       </div>
-      <div className="bg-muted/50 p-6 sm:p-8">
+      <div className="bg-muted/60 p-7 sm:p-10">
         <p className="eyebrow flex items-center gap-2">
           <SparklesIcon aria-hidden="true" className="size-3.5" />
           Potential workflow

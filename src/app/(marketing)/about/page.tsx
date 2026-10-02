@@ -17,13 +17,13 @@ export default function AboutPage() {
     <>
       <PageHero
         eyebrow="About"
-        title="We build practical technology for real businesses"
+        title={<>We build practical technology for <span className="accent-serif">real businesses</span></>}
         description="Mithila Web Labs is a product engineering company. We help growing businesses replace manual processes with software and AI that their teams actually use."
       />
 
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
-          <SectionHeader eyebrow="Our story" title="Why we started" />
+          <SectionHeader eyebrow="Our story" title={<>Why we <span className="accent-serif">started</span></>} />
           <div className="text-lead space-y-6">
             <p>
               Many growing businesses still run on spreadsheets, email, and
@@ -50,13 +50,15 @@ export default function AboutPage() {
       <Section tone="muted">
         <SectionHeader
           eyebrow="What we bring"
-          title="Four disciplines, one team"
+          title={<>Four disciplines, <span className="accent-serif">one team</span></>}
           description="The best business software comes from combining all four. Most projects that fail are missing at least one."
         />
-        <ul className="mt-12 grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {capabilities.map(({ title, description, icon: Icon }) => (
-            <li key={title} className="bg-background p-6 sm:p-7">
-              <Icon aria-hidden="true" className="size-5 text-brand" />
+            <li key={title} className="card-elevated p-7">
+              <span className="grid size-11 place-items-center rounded-xl bg-ink text-ink-foreground">
+                <Icon aria-hidden="true" className="size-5" />
+              </span>
               <h3 className="text-h3 mt-5">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
             </li>
@@ -65,7 +67,7 @@ export default function AboutPage() {
       </Section>
 
       <Section>
-        <SectionHeader eyebrow="Principles" title="How we make decisions" />
+        <SectionHeader eyebrow="Principles" title={<>How we make <span className="accent-serif">decisions</span></>} />
         <dl className="mt-12 divide-y border-y">
           {principles.map((p, i) => (
             <div key={p.title} className="grid gap-2 py-6 md:grid-cols-[4rem_1fr_2fr] md:gap-8">

@@ -1,15 +1,16 @@
 import Link from "next/link";
-import { ArrowRightIcon, XIcon } from "lucide-react";
+import { ArrowRightIcon, CheckIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/container";
-import { Section, SectionHeader } from "@/components/layout/section";
+import { InkBand } from "@/components/layout/ink-band";
+import { Eyebrow, Section, SectionHeader } from "@/components/layout/section";
 import { AiDemoPreview } from "@/components/demo/ai-demo-preview";
 import { ProjectCard } from "@/components/portfolio/project-card";
 import { CtaBand } from "@/components/sections/cta-band";
 import { DeliveryStages } from "@/components/sections/delivery-stages";
+import { HeroConsole } from "@/components/sections/hero-console";
 import { ProblemGrid } from "@/components/sections/problem-grid";
 import { SolutionCards } from "@/components/sections/solution-cards";
-import { WorkflowChain } from "@/components/sections/workflow-chain";
 import { businessProblems } from "@/content/problems";
 import { projects } from "@/content/projects";
 import { solutions } from "@/content/solutions";
@@ -26,33 +27,85 @@ export const metadata = {
   title: { absolute: `${siteConfig.name} — ${siteConfig.tagline}` },
 };
 
+const heroPoints = ["Working prototype in weeks", "You own the code", "Security built in"];
+
 export default function HomePage() {
   return (
     <>
-      <Hero />
+      <InkBand>
+        <Container className="grid gap-16 pt-20 pb-24 sm:pt-28 sm:pb-32 lg:grid-cols-[1.25fr_1fr] lg:items-center lg:gap-12">
+          <div className="animate-rise">
+            <Eyebrow>Product engineering · AI · Automation</Eyebrow>
+            <h1 className="text-display-xl mt-7">
+              AI-Powered Business Applications{" "}
+              <span className="accent-serif text-ink-foreground/85">&amp; Digital Products</span>
+            </h1>
+            <p className="text-lead mt-7 max-w-xl text-ink-muted">
+              We turn business problems into practical digital products,
+              intelligent workflows, and AI-powered applications.
+            </p>
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+              <Button asChild variant="brand" size="lg">
+                <Link href="/contact">
+                  Discuss Your Business Problem
+                  <ArrowRightIcon data-icon="inline-end" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline-ink" size="lg">
+                <Link href="/portfolio">Explore Our Work</Link>
+              </Button>
+            </div>
+            <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-muted">
+              {heroPoints.map((point) => (
+                <li key={point} className="flex items-center gap-2">
+                  <CheckIcon aria-hidden="true" className="size-4 text-brand" />
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div aria-hidden="true" className="animate-rise [animation-delay:150ms]">
+            <HeroConsole />
+          </div>
+        </Container>
+      </InkBand>
 
       <Section id="problems">
         <SectionHeader
           eyebrow="01 — The problem"
-          title="Most businesses don't need more software. They need fewer manual steps."
-          description="If any of these sound familiar, your business is spending time and money on work that software can do. We help you fix that."
+          title={
+            <>
+              Most businesses don&apos;t need more software. They need{" "}
+              <span className="accent-serif">fewer manual steps.</span>
+            </>
+          }
+          description="If any of these sound familiar, your business is spending time and money on work that software can do."
         />
-        <div className="mt-12">
+        <div className="mt-16">
           <ProblemGrid problems={businessProblems} />
         </div>
       </Section>
 
       <Section id="what-we-build" tone="muted">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeader
             eyebrow="02 — What we build"
-            title="Four ways we turn business problems into working software"
+            title={
+              <>
+                Four ways we turn problems into{" "}
+                <span className="accent-serif">working software</span>
+              </>
+            }
           />
-          <Button asChild variant="outline" size="lg" className="w-fit">
-            <Link href="/solutions">All solutions</Link>
+          <Button asChild variant="outline" size="lg" className="w-fit bg-card">
+            <Link href="/solutions">
+              All solutions
+              <ArrowRightIcon data-icon="inline-end" />
+            </Link>
           </Button>
         </div>
-        <div className="mt-12">
+        <div className="mt-16">
           <SolutionCards solutions={solutions} />
         </div>
       </Section>
@@ -60,13 +113,17 @@ export default function HomePage() {
       <Section id="ai">
         <SectionHeader
           eyebrow="03 — AI in practice"
-          title="From a manual process to a clear, automated workflow"
-          description="This is how we think about AI: start with a real business problem, then design a practical workflow where AI does the repetitive work and people stay in control."
+          title={
+            <>
+              From a manual process to a <span className="accent-serif">clear workflow</span>
+            </>
+          }
+          description="Start with a real business problem, then design a practical workflow where AI does the repetitive work and people stay in control."
         />
-        <div className="mt-12">
+        <div className="mt-16">
           <AiDemoPreview />
         </div>
-        <Button asChild variant="outline" size="lg" className="mt-8">
+        <Button asChild variant="outline" size="lg" className="mt-10 bg-card">
           <Link href="/solutions#ai-business-automation">
             Explore AI Solutions
             <ArrowRightIcon data-icon="inline-end" />
@@ -77,10 +134,14 @@ export default function HomePage() {
       <Section id="work" tone="muted">
         <SectionHeader
           eyebrow="04 — Featured work"
-          title="Proof that we build, not just advise"
+          title={
+            <>
+              Proof that we build, <span className="accent-serif">not just advise</span>
+            </>
+          }
           description="Our own products are where we test ideas and show how we design and build real AI applications."
         />
-        <div className="mt-12 space-y-4">
+        <div className="mt-16 space-y-6">
           {projects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
@@ -88,89 +149,29 @@ export default function HomePage() {
       </Section>
 
       <Section id="how-we-work">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeader
             eyebrow="05 — How we work"
-            title="A clear path from problem to working software"
+            title={
+              <>
+                A clear path from problem to <span className="accent-serif">working software</span>
+              </>
+            }
             description="You see progress at every stage, and a working prototype before full development begins."
           />
-          <Button asChild variant="outline" size="lg" className="w-fit">
-            <Link href="/how-we-work">Our process</Link>
+          <Button asChild variant="outline" size="lg" className="w-fit bg-card">
+            <Link href="/how-we-work">
+              Our process
+              <ArrowRightIcon data-icon="inline-end" />
+            </Link>
           </Button>
         </div>
-        <div className="mt-12">
+        <div className="mt-16">
           <DeliveryStages />
         </div>
       </Section>
 
       <CtaBand />
     </>
-  );
-}
-
-function Hero() {
-  return (
-    <section className="border-b">
-      <Container className="grid gap-14 py-16 sm:py-24 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:py-28">
-        <div>
-          <p className="eyebrow">Product engineering · AI · Automation</p>
-          <h1 className="text-display mt-6">
-            AI-Powered Business Applications{" "}
-            <span className="text-muted-foreground">&amp; Digital Products</span>
-          </h1>
-          <p className="text-lead mt-6 max-w-xl text-muted-foreground">
-            We turn business problems into practical digital products,
-            intelligent workflows, and AI-powered applications.
-          </p>
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <Button asChild variant="brand" size="lg">
-              <Link href="/contact">
-                Discuss Your Business Problem
-                <ArrowRightIcon data-icon="inline-end" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/portfolio">Explore Our Work</Link>
-            </Button>
-          </div>
-        </div>
-
-        <BeforeAfter />
-      </Container>
-    </section>
-  );
-}
-
-/** Small visual showing the kind of change we make: manual steps → a clear workflow. */
-function BeforeAfter() {
-  const before = ["Order arrives on WhatsApp", "Retyped into Excel", "Customer calls for status"];
-
-  return (
-    <figure className="rounded-xl border bg-card p-5 sm:p-6">
-      <figcaption className="eyebrow">Example: order processing</figcaption>
-      <div className="mt-5">
-        <p className="text-xs font-medium text-muted-foreground">Today</p>
-        <ul className="mt-2 space-y-1.5 text-sm text-muted-foreground">
-          {before.map((item) => (
-            <li key={item} className="flex items-center gap-2">
-              <XIcon aria-hidden="true" className="size-3.5 shrink-0" />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="mt-6 border-t pt-5">
-        <p className="text-xs font-medium text-muted-foreground">With the right system</p>
-        <WorkflowChain
-          className="mt-3"
-          steps={[
-            { label: "Order captured", type: "input" },
-            { label: "AI reads the details", type: "ai" },
-            { label: "Team approves", type: "human" },
-            { label: "Customer updated", type: "output" },
-          ]}
-        />
-      </div>
-    </figure>
   );
 }

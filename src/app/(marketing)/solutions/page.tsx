@@ -19,7 +19,7 @@ export default function SolutionsPage() {
     <>
       <PageHero
         eyebrow="Solutions"
-        title="Practical software for real business problems"
+        title={<>Practical software for <span className="accent-serif">real business problems</span></>}
         description="Every solution starts with how your business works today. Here is what we build, how we approach it, and what it changes."
       >
         <nav aria-label="Solutions on this page">
@@ -28,7 +28,7 @@ export default function SolutionsPage() {
               <li key={s.id}>
                 <a
                   href={`#${s.id}`}
-                  className="inline-flex rounded-md border bg-card px-3 py-2 text-sm transition-colors hover:border-foreground/30"
+                  className="inline-flex rounded-full border border-ink-border bg-ink-surface px-4 py-2 text-sm text-ink-foreground/85 transition-colors hover:border-white/25 hover:text-ink-foreground"
                 >
                   {s.title}
                 </a>
@@ -58,16 +58,18 @@ function SolutionDetail({ solution, index }: { solution: Solution; index: number
     <section
       id={solution.id}
       aria-labelledby={`${solution.id}-title`}
-      className={cn("border-b py-16 sm:py-24", index % 2 === 1 && "bg-muted")}
+      className={cn("scroll-mt-16 border-b py-20 sm:py-28", index % 2 === 1 && "bg-muted/60")}
     >
       <Container>
         <div className="flex items-center gap-3">
-          <span className="font-mono text-xs text-brand">
-            {String(index + 1).padStart(2, "0")}
+          <span className="grid size-12 place-items-center rounded-2xl bg-ink text-ink-foreground">
+            <Icon aria-hidden="true" className="size-5" />
           </span>
-          <Icon aria-hidden="true" className="size-5" />
+          <span className="font-mono text-xs text-muted-foreground">
+            {String(index + 1).padStart(2, "0")} / {String(solutions.length).padStart(2, "0")}
+          </span>
         </div>
-        <h2 id={`${solution.id}-title`} className="text-h2 mt-4 max-w-3xl">
+        <h2 id={`${solution.id}-title`} className="text-h2 mt-8 max-w-3xl">
           {solution.title}
         </h2>
         <p className="text-lead mt-4 max-w-2xl text-muted-foreground">{solution.summary}</p>
@@ -91,7 +93,7 @@ function SolutionDetail({ solution, index }: { solution: Solution; index: number
               <h3 className="eyebrow">Typical projects</h3>
               <ul className="mt-3 flex flex-wrap gap-2">
                 {solution.examples.map((e) => (
-                  <li key={e} className="rounded-md border bg-card px-2.5 py-1 text-sm">
+                  <li key={e} className="rounded-full border bg-card px-3 py-1 text-sm">
                     {e}
                   </li>
                 ))}
@@ -99,7 +101,7 @@ function SolutionDetail({ solution, index }: { solution: Solution; index: number
             </div>
           </div>
 
-          <div className="h-fit rounded-xl border bg-card p-6 sm:p-8">
+          <div className="card-elevated h-fit p-7 sm:p-9">
             <h3 className="eyebrow">Example</h3>
             <p className="mt-3 leading-relaxed">{solution.example.scenario}</p>
             <WorkflowChain steps={solution.example.workflow} className="mt-6" />
