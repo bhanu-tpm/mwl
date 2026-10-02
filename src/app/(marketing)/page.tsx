@@ -1,19 +1,21 @@
 import Link from "next/link";
-import { ArrowRightIcon, CheckIcon } from "lucide-react";
+import { ArrowRightIcon, CheckIcon, ShieldCheckIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/container";
 import { InkBand } from "@/components/layout/ink-band";
 import { Eyebrow, Section, SectionHeader } from "@/components/layout/section";
-import { AiDemoPreview } from "@/components/demo/ai-demo-preview";
 import { ProjectCard } from "@/components/portfolio/project-card";
+import { AiInPractice } from "@/components/sections/ai-in-practice";
 import { CtaBand } from "@/components/sections/cta-band";
 import { DeliveryStages } from "@/components/sections/delivery-stages";
 import { HeroTransform } from "@/components/sections/hero-transform";
 import { ProblemPicker } from "@/components/sections/problem-picker";
 import { SolutionCards } from "@/components/sections/solution-cards";
+import { aiGuardrails, autonomyLadder } from "@/content/ai-scenarios";
 import { projects } from "@/content/projects";
 import { solutions } from "@/content/solutions";
 import { pageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 
 export const metadata = {
@@ -108,26 +110,78 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section id="ai">
-        <SectionHeader
-          eyebrow="03 — AI in practice"
-          title={
-            <>
-              From a manual process to a <span className="accent-serif">clear workflow</span>
-            </>
-          }
-          description="Start with a real business problem, then design a practical workflow where AI does the repetitive work and people stay in control."
-        />
-        <div className="mt-16">
-          <AiDemoPreview />
-        </div>
-        <Button asChild variant="outline" size="lg" className="mt-10 bg-card">
-          <Link href="/solutions#ai-business-automation">
-            Explore AI Solutions
-            <ArrowRightIcon data-icon="inline-end" />
-          </Link>
-        </Button>
-      </Section>
+      <InkBand id="ai" glow="end">
+        <Container className="py-20 sm:py-28 lg:py-32">
+          <div className="max-w-3xl">
+            <Eyebrow>03 — AI in practice</Eyebrow>
+            <h2 className="text-h2 mt-5">
+              See AI do the work. <span className="accent-serif">Your team</span> makes the calls.
+            </h2>
+            <p className="text-lead mt-6 max-w-2xl text-ink-muted">
+              Pick an industry to see a typical run: AI reads the messy input, checks it, and
+              hands only the exceptions to a person.
+            </p>
+          </div>
+
+          <div className="mt-14">
+            <AiInPractice />
+          </div>
+
+          <div className="mt-20 grid gap-12 border-t border-ink-border pt-14 lg:grid-cols-[1fr_1.35fr] lg:gap-16">
+            <div>
+              <h3 className="text-2xl font-semibold tracking-tight">
+                How we put AI to <span className="accent-serif">work</span>
+              </h3>
+              <p className="mt-3 leading-relaxed text-ink-muted">
+                We start small and earn trust. AI takes on more only after it has proven itself
+                on your real work.
+              </p>
+              <ul className="mt-8 space-y-4">
+                {aiGuardrails.map((g) => (
+                  <li key={g.title} className="flex gap-3">
+                    <ShieldCheckIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-brand-on-ink" />
+                    <span>
+                      <span className="block font-medium">{g.title}</span>
+                      <span className="text-sm text-ink-muted">{g.description}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <ol className="grid gap-3 sm:grid-cols-3">
+              {autonomyLadder.map((rung, i) => (
+                <li
+                  key={rung.step}
+                  className={cn(
+                    "relative flex flex-col rounded-2xl border border-ink-border bg-ink-surface p-5",
+                    // Rising staircase on wider screens: each stage hands AI more responsibility.
+                    ["sm:mt-12", "sm:mt-6", "sm:mt-0"][i],
+                    i === autonomyLadder.length - 1 && "border-brand-on-ink/40",
+                  )}
+                >
+                  <span className="font-mono text-xs text-brand-on-ink">Stage {i + 1}</span>
+                  <span className="mt-2 text-lg font-semibold">{rung.step}</span>
+                  <span className="mt-1 text-sm text-ink-foreground/85">{rung.title}</span>
+                  <span className="mt-3 text-sm leading-relaxed text-ink-muted">{rung.description}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="mt-14 flex flex-col gap-3 sm:flex-row">
+            <Button asChild variant="brand" size="lg">
+              <Link href="/contact">
+                Describe your process
+                <ArrowRightIcon data-icon="inline-end" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline-ink" size="lg">
+              <Link href="/solutions#ai-business-automation">Explore AI Solutions</Link>
+            </Button>
+          </div>
+        </Container>
+      </InkBand>
 
       <Section id="work" tone="muted">
         <SectionHeader
