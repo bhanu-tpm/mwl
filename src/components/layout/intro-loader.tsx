@@ -6,11 +6,12 @@ import {
   WorkflowIcon,
   type LucideIcon,
 } from "lucide-react";
+import { siteConfig } from "@/config/site";
 
 /**
  * First-visit intro (~1.8s) that says what we build before the visitor reads anything:
  *   the neural net draws → our four capabilities light up as parts of it
- *   → the core neuron fires, "mwl" writes itself → positioning line → page reveals.
+ *   → the core neuron fires, "mwl" writes itself → company name → page reveals.
  *
  * Pure HTML/SVG + CSS (see `.intro*` in globals.css): no client JS, so it can never get stuck.
  * Skipped on repeat loads in the same session (`introScript`) and for reduced motion.
@@ -141,9 +142,7 @@ export function IntroLoader() {
           ))}
         </div>
 
-        <p className="intro-caption">
-          AI-Powered Business Applications <em>&amp; Digital Products</em>
-        </p>
+        <p className="intro-caption">{siteConfig.name}</p>
       </div>
     </div>
   );
