@@ -3,7 +3,7 @@
 _Decision (2026-10-02): develop and review everything locally; deploy once, in Phase 8. GitHub (`bhanu-tpm/mwl`) is used for backup and CI only._
 
 ## Testing on a phone before deployment
-Run `npm run dev -- -H 0.0.0.0` and open the printed **Network** URL on a phone connected to the same Wi-Fi.
+Run `npm run dev`, then on a phone connected to the same Wi-Fi open `http://<your-Mac-IP>:3000` (the IP is shown in the dev server output as **Network**, or run `ipconfig getifaddr en0`). If the page won't load, allow incoming connections for `node` in macOS Settings → Network → Firewall.
 
 ## Host (final choice in Phase 8)
 Both candidates are free and allow commercial use:
