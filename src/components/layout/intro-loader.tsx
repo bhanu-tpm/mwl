@@ -148,5 +148,9 @@ export function IntroLoader() {
   );
 }
 
-/** Runs before paint: hide the intro on repeat loads within the same browser session. */
-export const introScript = `try{if(sessionStorage.getItem("mwl-intro")){document.documentElement.dataset.intro="seen"}else{sessionStorage.setItem("mwl-intro","1")}}catch(e){}`;
+/**
+ * Runs before paint. Repeat loads in the session skip the intro entirely; on the first load,
+ * the page is marked "seen" once the intro has finished (1.85s), so client-side navigation
+ * afterwards doesn't inherit the intro's held-back entrance animations.
+ */
+export const introScript = `try{var d=document.documentElement;if(sessionStorage.getItem("mwl-intro")){d.dataset.intro="seen"}else{sessionStorage.setItem("mwl-intro","1");setTimeout(function(){d.dataset.intro="seen"},1850)}}catch(e){}`;
