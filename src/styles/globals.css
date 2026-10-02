@@ -220,3 +220,145 @@
     }
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * First-visit intro (src/components/layout/intro-loader.tsx). Total ≈ 1.65s.
+ * ------------------------------------------------------------------------- */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  pointer-events: none;
+  animation: intro-out 350ms cubic-bezier(0.4, 0, 0.2, 1) 1.3s forwards;
+}
+html[data-intro="seen"] .intro {
+  display: none;
+}
+/* While the intro plays, hold entrance animations so the page rises as the overlay lifts. */
+html:not([data-intro="seen"]) .animate-rise {
+  animation-delay: 1.35s;
+}
+html:not([data-intro="seen"]) .animate-rise + .animate-rise {
+  animation-delay: 1.5s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}
+.intro-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  animation: intro-lift 350ms cubic-bezier(0.4, 0, 0.2, 1) 1.3s forwards;
+}
+.intro-mark {
+  width: clamp(7.5rem, 22vw, 9.5rem);
+  height: clamp(7.5rem, 22vw, 9.5rem);
+  overflow: visible;
+  color: var(--ink-foreground);
+}
+.intro-draw {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: intro-draw 400ms cubic-bezier(0.3, 0.7, 0.3, 1) forwards;
+}
+.intro-ring {
+  stroke-width: 0.6;
+  opacity: 0.3;
+  animation-duration: 550ms;
+}
+.intro-hex {
+  stroke-width: 0.6;
+  opacity: 0.38;
+  animation-delay: 150ms;
+}
+.intro-edge {
+  stroke-width: 0.6;
+  opacity: 0.55;
+  animation-delay: calc(180ms + var(--i) * 40ms);
+}
+.intro-fire {
+  color: var(--brand-on-ink);
+  stroke-width: 0.9;
+  opacity: 1;
+  animation:
+    intro-draw 300ms cubic-bezier(0.3, 0.7, 0.3, 1) 520ms forwards,
+    intro-glow 600ms ease-out 560ms;
+}
+.intro-node {
+  fill: currentColor;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  animation: intro-pop 260ms cubic-bezier(0.3, 1.4, 0.5, 1) forwards;
+  animation-delay: calc(var(--i) * 25ms);
+}
+.intro-node-inner {
+  opacity: 0.75;
+  animation-delay: calc(120ms + var(--i) * 25ms);
+}
+.intro-fire-node {
+  animation:
+    intro-pop 260ms cubic-bezier(0.3, 1.4, 0.5, 1) calc(var(--i) * 25ms) forwards,
+    intro-ignite 200ms ease-out 560ms forwards;
+}
+.intro-pulse {
+  fill: none;
+  stroke: var(--brand-on-ink);
+  stroke-width: 0.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: intro-ripple 700ms cubic-bezier(0.2, 0.7, 0.2, 1) 560ms forwards;
+}
+.intro-letters {
+  stroke-width: 1.9;
+  animation-duration: 380ms;
+  animation-delay: 620ms;
+}
+.intro-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink-foreground);
+  opacity: 0;
+  transform: translateY(8px);
+  animation: intro-name 320ms cubic-bezier(0.2, 0.7, 0.2, 1) 820ms forwards;
+}
+
+@keyframes intro-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes intro-pop {
+  to { transform: scale(1); }
+}
+@keyframes intro-ignite {
+  to { fill: var(--brand-on-ink); }
+}
+@keyframes intro-glow {
+  0% { filter: drop-shadow(0 0 0 transparent); }
+  40% { filter: drop-shadow(0 0 2px var(--brand-on-ink)); }
+  100% { filter: drop-shadow(0 0 0 transparent); }
+}
+@keyframes intro-ripple {
+  0% { opacity: 0.9; transform: scale(0.5); }
+  100% { opacity: 0; transform: scale(7); }
+}
+@keyframes intro-name {
+  to { opacity: 1; transform: none; }
+}
+@keyframes intro-lift {
+  to { transform: translateY(-10px) scale(0.98); }
+}
+@keyframes intro-out {
+  to { opacity: 0; visibility: hidden; }
+}

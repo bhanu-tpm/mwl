@@ -12,7 +12,7 @@ _Status: Phase 0 draft, awaiting approval_
 | **3** Portfolio | Project types, card, detail template, CompanyBrainAI, case-study template (unlisted) | `feat: add portfolio system` | Needs CompanyBrainAI material |
 | **4** AI demo | Provider abstraction, analyzer, route, UI, cached examples, guardrails | `feat: add AI business problem demo` | Needs a free Gemini API key (no billing attached) |
 | **5** Supabase | Migrations + RLS, lead storage, Resend notification, admin auth, leads dashboard | `feat: add lead storage`, `feat: add admin dashboard` | **Architecture gate** (security model) |
-| **6** Hardening | SEO (JSON-LD, sitemap, OG), CSP/security headers, a11y audit, Lighthouse, error/empty states | | |
+| **6** Hardening | SEO (JSON-LD, sitemap, OG), CSP/security headers (allow the intro's inline session script via hash), a11y audit, Lighthouse, error/empty states | | |
 | **7** Testing | Playwright flows, mobile device testing, API-failure simulation | | |
 | **8** Deploy | Production deploy, domain, docs: deployment, local-development, security, rollback | | **Go-live gate** |
 

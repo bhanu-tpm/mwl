@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { IntroLoader, introScript } from "@/components/layout/intro-loader";
 import { siteConfig } from "@/config/site";
 import "@/styles/globals.css";
 
@@ -42,11 +43,19 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    // suppressHydrationWarning: the intro script may set data-intro on <html> before hydration.
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
+      </head>
+      <body className="flex min-h-full flex-col">
+        <IntroLoader />
+        {children}
+      </body>
     </html>
   );
 }
