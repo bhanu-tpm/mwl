@@ -9,9 +9,8 @@ import { ProjectCard } from "@/components/portfolio/project-card";
 import { CtaBand } from "@/components/sections/cta-band";
 import { DeliveryStages } from "@/components/sections/delivery-stages";
 import { HeroTransform } from "@/components/sections/hero-transform";
-import { ProblemGrid } from "@/components/sections/problem-grid";
+import { ProblemPicker } from "@/components/sections/problem-picker";
 import { SolutionCards } from "@/components/sections/solution-cards";
-import { businessProblems } from "@/content/problems";
 import { projects } from "@/content/projects";
 import { solutions } from "@/content/solutions";
 import { pageMetadata } from "@/lib/seo";
@@ -76,14 +75,13 @@ export default function HomePage() {
           eyebrow="01 — The problem"
           title={
             <>
-              Most businesses don&apos;t need more software. They need{" "}
-              <span className="accent-serif">fewer manual steps.</span>
+              Which of these sound <span className="accent-serif">familiar?</span>
             </>
           }
-          description="If any of these sound familiar, your business is spending time and money on work that software can do."
+          description="Tap the problems your business faces. We'll show how we fix each one, and you can send them straight to us."
         />
         <div className="mt-16">
-          <ProblemGrid problems={businessProblems} />
+          <ProblemPicker />
         </div>
       </Section>
 

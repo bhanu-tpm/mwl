@@ -3,6 +3,7 @@ import { Container } from "@/components/layout/container";
 import { ContactForm } from "@/components/forms/contact-form";
 import { PageHero } from "@/components/sections/page-hero";
 import { siteConfig } from "@/config/site";
+import { problemsToEnquiry } from "@/content/problems";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -27,8 +28,11 @@ const nextSteps = [
   },
 ];
 
-export default function ContactPage() {
+export default async function ContactPage({ searchParams }: PageProps<"/contact">) {
   const { contact } = siteConfig;
+  // Problems picked on the home page arrive as ?problems=excel,approvals.
+  const { problems } = await searchParams;
+  const defaultProblem = problemsToEnquiry(String(problems ?? "").split(","));
 
   return (
     <>
@@ -40,7 +44,7 @@ export default function ContactPage() {
       <section>
         <Container className="grid gap-14 py-16 sm:py-24 lg:grid-cols-[1.5fr_1fr] lg:gap-20">
           <div className="card-elevated p-6 sm:p-10">
-            <ContactForm />
+            <ContactForm defaultProblem={defaultProblem} />
           </div>
 
           <aside aria-label="What happens next" className="space-y-10">
