@@ -196,6 +196,20 @@
   .animate-rise {
     animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
+  /* Hero visual: data flowing along connector lines, and a soft pulse on the core. */
+  @keyframes flow {
+    to { stroke-dashoffset: -14; }
+  }
+  .hero-flow {
+    animation: flow 1.2s linear infinite;
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.92); opacity: 0.9; }
+    100% { transform: scale(1.18); opacity: 0; }
+  }
+  .hero-pulse {
+    animation: pulse-ring 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) infinite;
+  }
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

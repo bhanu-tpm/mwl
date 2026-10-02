@@ -8,7 +8,7 @@ import { AiDemoPreview } from "@/components/demo/ai-demo-preview";
 import { ProjectCard } from "@/components/portfolio/project-card";
 import { CtaBand } from "@/components/sections/cta-band";
 import { DeliveryStages } from "@/components/sections/delivery-stages";
-import { HeroConsole } from "@/components/sections/hero-console";
+import { HeroTransform } from "@/components/sections/hero-transform";
 import { ProblemGrid } from "@/components/sections/problem-grid";
 import { SolutionCards } from "@/components/sections/solution-cards";
 import { businessProblems } from "@/content/problems";
@@ -65,8 +65,8 @@ export default function HomePage() {
             </ul>
           </div>
 
-          <div aria-hidden="true" className="animate-rise [animation-delay:150ms]">
-            <HeroConsole />
+          <div className="animate-rise [animation-delay:150ms]">
+            <HeroTransform />
           </div>
         </Container>
       </InkBand>
