@@ -31,7 +31,7 @@ export function MobileNav() {
           <MenuIcon className="size-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full gap-0 sm:max-w-sm">
+      <SheetContent side="right" className="w-full gap-0 sm:max-w-sm [&>[data-slot=sheet-close]]:top-4.5">
         <div className="flex h-16 items-center gap-2.5 border-b px-4 font-semibold">
           <LogoMark tone="light" />
           <SheetTitle className="text-base font-semibold">Menu</SheetTitle>

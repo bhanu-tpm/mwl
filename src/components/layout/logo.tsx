@@ -48,16 +48,16 @@ export function LogoMark({
 
   return (
     <svg viewBox="0 0 48 48" aria-hidden="true" className={cn("size-11 shrink-0", className)}>
-      <g fill="none" stroke="currentColor" strokeWidth="0.5">
-        <circle cx="24" cy="24" r={OUTER_RADIUS} opacity="0.22" />
-        <path d={EDGES} opacity="0.42" />
-        <path d={INNER_RING} opacity="0.28" />
+      <g fill="none" stroke="currentColor" strokeWidth="0.7">
+        <circle cx="24" cy="24" r={OUTER_RADIUS} opacity="0.3" />
+        <path d={EDGES} opacity="0.55" />
+        <path d={INNER_RING} opacity="0.38" />
       </g>
       <path
         d={FIRING_EDGES}
         fill="none"
         stroke="currentColor"
-        strokeWidth="0.75"
+        strokeWidth="0.95"
         strokeLinecap="round"
         className={accent}
       />
