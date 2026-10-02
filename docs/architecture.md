@@ -27,7 +27,7 @@ Next.js app (App Router, TypeScript)  ── hosted on Netlify Free (portable to
 | Framework | Next.js (App Router) + React + TypeScript (strict) | Server Components by default; client components only where interactive |
 | Styling | Tailwind CSS + shadcn/ui | shadcn components are copied into the repo, so there is no runtime dependency lock-in |
 | Validation | Zod | One schema per form, shared by client and server; the server re-validates every time |
-| Forms | React Hook Form + Zod resolver (contact form only) | Small and accessible |
+| Forms | Server Actions + React `useActionState` + native HTML validation | No form library needed; the server re-validates with the shared Zod schema |
 | DB / Auth | Supabase (`@supabase/ssr`) | Free tier |
 | AI | Google Gemini API (free tier) via our own `AIProvider` interface | Provider can be swapped (OpenAI, Groq, Anthropic…) by adding one file and changing one env variable |
 | Email | Resend (free tier: 3,000 emails/month) | Lead notifications only |
