@@ -33,7 +33,7 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent side="right" className="w-full gap-0 sm:max-w-sm">
         <div className="flex h-16 items-center gap-2.5 border-b px-4 font-semibold">
-          <LogoMark />
+          <LogoMark tone="light" />
           <SheetTitle className="text-base font-semibold">Menu</SheetTitle>
         </div>
         <SheetDescription className="sr-only">Site navigation</SheetDescription>
