@@ -9,6 +9,7 @@ import { AiInPractice } from "@/components/sections/ai-in-practice";
 import { CtaBand } from "@/components/sections/cta-band";
 import { DeliveryStages } from "@/components/sections/delivery-stages";
 import { HeroTransform } from "@/components/sections/hero-transform";
+import { ProblemFlow } from "@/components/sections/problem-flow";
 import { ProblemPicker } from "@/components/sections/problem-picker";
 import { SolutionCards } from "@/components/sections/solution-cards";
 import { aiGuardrails, autonomyLadder } from "@/content/ai-scenarios";
@@ -82,7 +83,10 @@ export default function HomePage() {
           }
           description="Tap the problems your business faces. We'll show how we fix each one, and you can send them straight to us."
         />
-        <div className="mt-16">
+        <div className="mt-14">
+          <ProblemFlow />
+        </div>
+        <div className="mt-6">
           <ProblemPicker />
         </div>
       </Section>

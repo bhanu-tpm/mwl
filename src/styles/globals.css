@@ -444,3 +444,51 @@ html:not([data-intro="seen"]) .animate-rise + .animate-rise {
 @keyframes intro-out {
   to { opacity: 0; visibility: hidden; }
 }
+
+/* ---------------------------------------------------------------------------
+ * Problem flow (src/components/sections/problem-flow.tsx)
+ * ------------------------------------------------------------------------- */
+.flow-lane-in {
+  stroke: color-mix(in oklab, var(--brand-on-ink) 45%, transparent);
+  stroke-width: 1;
+}
+.flow-lane-out {
+  stroke: rgb(255 255 255 / 0.18);
+  stroke-width: 1;
+}
+.flow-dot-in {
+  fill: var(--brand-on-ink);
+}
+.flow-dot-out {
+  fill: rgb(255 255 255 / 0.75);
+}
+.flow-tag-problem {
+  fill: #2a1710;
+  stroke: var(--brand-on-ink);
+  stroke-width: 1;
+}
+.flow-tag-outcome {
+  fill: #f5f4ef;
+}
+.flow-tag-text {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+}
+.flow-tag-problem + .flow-tag-text {
+  fill: #ffd9c7;
+}
+.flow-tag-outcome + .flow-tag-text {
+  fill: #141413;
+}
+.flow-static {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-motion {
+    display: none;
+  }
+  .flow-static {
+    display: inline;
+  }
+}
