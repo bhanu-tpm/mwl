@@ -1,9 +1,16 @@
 # Deployment
 
-_Phase 1: preview deployments only. Production go-live, domain, and rollback steps are completed in Phase 8._
+_Decision (2026-10-02): develop and review everything locally; deploy once, in Phase 8. GitHub (`bhanu-tpm/mwl`) is used for backup and CI only._
 
-## Host: Netlify Free
-Chosen because it is free, allows commercial use, and deploys Next.js with no configuration. See roadmap.md for the cost decision.
+## Testing on a phone before deployment
+Run `npm run dev -- -H 0.0.0.0` and open the printed **Network** URL on a phone connected to the same Wi-Fi.
+
+## Host (final choice in Phase 8)
+Both candidates are free and allow commercial use:
+- **Netlify Free:** zero-config, but the credit-based plan allows only about 20 production deploys a month, and the site pauses if credits run out.
+- **Cloudflare Workers Free:** no deploy limits, unlimited bandwidth, 100k requests/day; needs the OpenNext adapter.
+
+The Netlify steps below are kept for reference.
 
 ### One-time setup (about 10 minutes, done by the founder)
 1. Push this repository to GitHub (a private repo is fine).
@@ -15,5 +22,3 @@ Chosen because it is free, allows commercial use, and deploys Next.js with no co
 ### Rollback
 Netlify → **Deploys** → choose a previous deploy → **Publish deploy**. This takes effect instantly with no rebuild.
 
-### Fallback host
-If Netlify's free limits ever become a problem: Cloudflare Workers Free via the OpenNext adapter. The app uses no Netlify-specific APIs.

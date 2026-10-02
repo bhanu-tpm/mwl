@@ -16,7 +16,7 @@ _Status: Phase 0 draft, awaiting approval_
 | **7** Testing | Playwright flows, mobile device testing, API-failure simulation | | |
 | **8** Deploy | Production deploy, domain, docs: deployment, local-development, security, rollback | | **Go-live gate** |
 
-A preview deployment (free) is set up in Phase 1, so every phase can be reviewed on a real URL and a real phone.
+Development and review happen locally (phones via the local network). The single deployment happens in Phase 8; the host (Netlify Free vs Cloudflare Workers Free) is chosen then.
 
 ## 14. Cost considerations
 
