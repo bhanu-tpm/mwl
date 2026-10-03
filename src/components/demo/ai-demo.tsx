@@ -19,12 +19,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { LogoMark } from "@/components/layout/logo";
 import { demoExamples } from "@/content/demo-examples";
-import {
-  DEMO_INPUT_MAX,
-  DEMO_INPUT_MIN,
-  type DemoResponse,
-  type DemoResult,
-} from "@/lib/validation/demo.schema";
+import { DEMO_INPUT_MAX, DEMO_INPUT_MIN } from "@/lib/validation/demo.constants";
+import type { DemoResponse, DemoResult } from "@/lib/validation/demo.schema";
 import { cn } from "@/lib/utils";
 
 const stepStyle: Record<DemoResult["workflow"][number]["type"], { icon: LucideIcon; label: string; className: string }> = {

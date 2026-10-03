@@ -1,7 +1,8 @@
 import { z } from "zod";
+import { DEMO_INPUT_MAX, DEMO_INPUT_MIN, solutionCategories, workflowStepTypes } from "./demo.constants";
 
-export const DEMO_INPUT_MIN = 20;
-export const DEMO_INPUT_MAX = 600;
+export { DEMO_INPUT_MAX, DEMO_INPUT_MIN, solutionCategories, workflowStepTypes };
+
 
 export const demoInputSchema = z.object({
   input: z
@@ -11,8 +12,6 @@ export const demoInputSchema = z.object({
     .max(DEMO_INPUT_MAX, `Please keep it under ${DEMO_INPUT_MAX} characters.`),
 });
 
-export const workflowStepTypes = ["input", "ai", "human", "system", "output"] as const;
-export const solutionCategories = ["automation", "business-app", "knowledge", "portal"] as const;
 
 /** Output contract for the AI demo (docs/ai-architecture.md). Every model response is checked against it. */
 export const demoResultSchema = z.object({

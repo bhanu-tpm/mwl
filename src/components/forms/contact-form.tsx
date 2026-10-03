@@ -12,7 +12,7 @@ import {
   companySizeOptions,
   industryOptions,
   timelineOptions,
-} from "@/lib/validation/lead.schema";
+} from "@/lib/validation/lead.options";
 import { siteConfig } from "@/config/site";
 import { FormField, NativeSelect, controlClassName } from "./form-field";
 
