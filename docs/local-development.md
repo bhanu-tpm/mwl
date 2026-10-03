@@ -39,7 +39,15 @@ terminal in development, and the AI demo uses in-memory limits.
 | `npm run db:start` / `db:stop` / `db:reset` | Local Supabase stack |
 | `npm run admin:create` | Create or promote an admin user |
 
-CI (`.github/workflows/ci.yml`) runs lint, typecheck, and build on every push and PR to `main`.
+## Tests
+| Command | What it runs |
+|---|---|
+| `npm test` | Unit tests (Vitest): validation, Gemini provider with mocked API, visitor limits, content guards. No network or database. |
+| `npm run build && npm run test:e2e` | End-to-end tests (Playwright) against the production build on port 3100 and the local Supabase (`npm run db:start` first). Desktop and mobile. |
+
+The e2e server runs with `AI_PROVIDER=none` (no real AI calls), a contact limit of 3 per hour, and a fake per-test visitor IP header, so runs are deterministic. Test records use the `@e2e.test` email domain and are removed afterwards.
+
+CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests, and build, plus the full e2e suite with its own Supabase, on every push and PR to `main`.
 
 ## Conventions
 - **Next.js 16.** APIs differ from older versions. Version-matched docs are in `node_modules/next/dist/docs/` (see `AGENTS.md`).
