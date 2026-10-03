@@ -1,0 +1,133 @@
+import type { DemoResult } from "@/lib/validation/demo.schema";
+
+/**
+ * Curated examples for the AI demo. Selecting one returns this stored answer instantly,
+ * with no AI call and no cost, so the demo always works, even without an API key.
+ */
+export type DemoExample = { id: string; label: string; input: string; result: DemoResult };
+
+export const demoExamples: DemoExample[] = [
+  {
+    id: "invoices",
+    label: "Invoices from email",
+    input:
+      "Our accounts team receives around 300 supplier invoices a month by email. They open each PDF and type the details into Excel and then into Tally.",
+    result: {
+      isBusinessProblem: true,
+      problemSummary: "Manual invoice processing from email",
+      suggestedSolution:
+        "AI reads each emailed invoice, checks it against purchase orders, and sends it for one-click approval before posting to Tally.",
+      workflow: [
+        { label: "Invoice email arrives", type: "input" },
+        { label: "AI extracts details", type: "ai" },
+        { label: "Match with PO", type: "system" },
+        { label: "Accounts approves", type: "human" },
+        { label: "Posted to Tally", type: "output" },
+      ],
+      benefits: [
+        "No more retyping invoice details",
+        "Mismatches caught before payment",
+        "Clear record of who approved what",
+        "Faster month-end closing",
+      ],
+      considerations: [
+        "Needs read access to the invoices inbox and your Tally setup",
+        "Unusual invoice formats may need a person to check at first",
+      ],
+      solutionCategory: "automation",
+    },
+  },
+  {
+    id: "whatsapp-orders",
+    label: "WhatsApp orders",
+    input:
+      "Our sales team gets customer orders on WhatsApp. Someone copies each order into an Excel sheet, and customers keep calling to ask if their order has shipped.",
+    result: {
+      isBusinessProblem: true,
+      problemSummary: "Orders arrive on WhatsApp and are tracked in Excel",
+      suggestedSolution:
+        "Capture WhatsApp orders into a simple order system that checks stock and price, gets approval, and updates customers automatically.",
+      workflow: [
+        { label: "WhatsApp order", type: "input" },
+        { label: "AI reads the order", type: "ai" },
+        { label: "Stock & price check", type: "system" },
+        { label: "Sales confirms", type: "human" },
+        { label: "Customer auto-updated", type: "output" },
+      ],
+      benefits: [
+        "Every order tracked in one place",
+        "Fewer quantity and price mistakes",
+        "Customers get status without calling",
+        "Live view of pending orders",
+      ],
+      considerations: [
+        "Requires a WhatsApp Business account connected through an approved provider",
+      ],
+      solutionCategory: "automation",
+    },
+  },
+  {
+    id: "approvals",
+    label: "Slow approvals",
+    input:
+      "Purchase requests go by email to the manager and then to finance. They often get stuck for days and nobody knows who has them.",
+    result: {
+      isBusinessProblem: true,
+      problemSummary: "Purchase approvals stuck in email",
+      suggestedSolution:
+        "A simple approval app where requests follow fixed rules, reminders go out automatically, and approvers can act from their phone.",
+      workflow: [
+        { label: "Request submitted", type: "input" },
+        { label: "Routed by amount", type: "system" },
+        { label: "Manager approves", type: "human" },
+        { label: "Finance approves", type: "human" },
+        { label: "PO issued", type: "output" },
+      ],
+      benefits: [
+        "Everyone can see where a request is",
+        "Automatic reminders stop delays",
+        "Approve from phone in one tap",
+        "Complete approval history for audits",
+      ],
+      considerations: ["Approval rules and limits need to be agreed with management first"],
+      solutionCategory: "business-app",
+    },
+  },
+  {
+    id: "policies",
+    label: "Answering staff questions",
+    input:
+      "Our HR team answers the same questions about leave, travel and reimbursement policies every day. The answers are in PDFs that nobody reads.",
+    result: {
+      isBusinessProblem: true,
+      problemSummary: "Repeated policy questions answered by hand",
+      suggestedSolution:
+        "A private AI assistant that answers staff questions from your approved policy documents and shows the source for every answer.",
+      workflow: [
+        { label: "Employee asks", type: "input" },
+        { label: "Search policy PDFs", type: "system" },
+        { label: "AI answers with source", type: "ai" },
+        { label: "HR handles unclear cases", type: "human" },
+        { label: "Answer delivered", type: "output" },
+      ],
+      benefits: [
+        "Instant answers, any time",
+        "Every answer links to its source",
+        "HR time freed for real issues",
+        "Faster onboarding for new staff",
+      ],
+      considerations: [
+        "Policy documents must be current; outdated PDFs give outdated answers",
+      ],
+      solutionCategory: "knowledge",
+    },
+  },
+];
+
+const normalise = (s: string) => s.trim().replace(/\s+/g, " ").toLowerCase();
+
+/** Exact (whitespace- and case-insensitive) match against a curated example. */
+export function findExample(input: string) {
+  const n = normalise(input);
+  return demoExamples.find((e) => normalise(e.input) === n);
+}
