@@ -24,7 +24,7 @@ Success test: within 10 seconds a visitor should be able to say, *"These people 
 
 | Persona | Context | What they need to see |
 |---|---|---|
-| **Indian SME founder / MD** (primary) | 10–200 staff. Runs on Excel, WhatsApp, Tally, and email. Cost-conscious. Has been burned by agencies before. | Plain language, problems they recognise, evidence we deliver, an easy way to talk to us (including WhatsApp) |
+| **Indian SME founder / MD** (primary) | 10–200 staff. Runs on Excel, WhatsApp, accounting software, and email. Cost-conscious. Has been burned by agencies before. | Plain language, problems they recognise, evidence we deliver, an easy way to talk to us (including WhatsApp) |
 | **Operations head** | Owns the painful process: approvals, data entry, status chasing | A clear "before → after" workflow and what changes for their team |
 | **CTO / tech lead** (growing company) | Judges engineering quality | Architecture, stack, security posture, and code quality signals in the portfolio |
 | **Product manager** | Wants a build partner | Process: discovery → prototype → iterate |

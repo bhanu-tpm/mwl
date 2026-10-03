@@ -36,7 +36,7 @@ export const solutions: Solution[] = [
       "We map the process step by step, then automate the repetitive parts. AI reads and extracts information from documents and messages; rules validate it; people approve only what needs judgement.",
     example: {
       scenario:
-        "A distributor receives 200 supplier invoices a month by email and types each one into Excel and Tally.",
+        "A distributor receives 200 supplier invoices a month by email and types each one into Excel and the accounting software.",
       workflow: [
         { label: "Invoice email", type: "input" },
         { label: "AI extracts details", type: "ai" },
