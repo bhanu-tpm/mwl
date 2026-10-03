@@ -22,3 +22,23 @@ The Netlify steps below are kept for reference.
 ### Rollback
 Netlify → **Deploys** → choose a previous deploy → **Publish deploy**. This takes effect instantly with no rebuild.
 
+
+## Production database and email (do at Phase 8, about 20 minutes)
+
+### Supabase (free)
+1. Create a project at [supabase.com](https://supabase.com) (region: Mumbai, `ap-south-1`).
+2. **Authentication → Sign In / Providers:** turn **off** "Allow new users to sign up". Keep the Email provider **on**.
+3. Apply the schema from your Mac:
+   ```bash
+   npx supabase login
+   npx supabase link --project-ref <your-project-ref>
+   npx supabase db push
+   ```
+4. **Project Settings → API Keys:** copy the URL, publishable key, and secret key into the host's environment variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`).
+5. Create your admin: put the production URL and secret key in a temporary shell and run `npm run admin:create`.
+6. GitHub → repo **Settings → Secrets and variables → Actions:** add `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` so the keep-alive workflow can stop the free project from pausing.
+
+### Resend (free: 3,000 emails/month)
+1. Sign up at [resend.com](https://resend.com) with the email that should receive leads; create an API key.
+2. Set `RESEND_API_KEY` and `LEAD_NOTIFICATION_EMAIL` (that same email).
+3. Later, after buying the domain: verify it in Resend and set `EMAIL_FROM` to e.g. `Mithila Web Labs <hello@yourdomain>`.

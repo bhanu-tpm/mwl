@@ -1,0 +1,28 @@
+name: Supabase keep-alive
+
+# Free Supabase projects pause after 7 days without activity, which would break the contact
+# form. A tiny weekly API request keeps the project awake. Needs two repository secrets:
+# SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY (Settings → Secrets and variables → Actions).
+on:
+  schedule:
+    - cron: "17 6 * * 1,4" # Mondays and Thursdays, 06:17 UTC
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "Secrets not set yet; skipping."; exit 0
+          fi
+          # Any database round trip counts as activity; RLS denies the read, which is expected.
+          code=$(curl -s -o /dev/null -w "%{http_code}" "$SUPABASE_URL/rest/v1/leads?select=id&limit=1" \
+            -H "apikey: $SUPABASE_PUBLISHABLE_KEY")
+          echo "Supabase responded with HTTP $code"
+          case "$code" in 2*|401|403) exit 0 ;; *) exit 1 ;; esac

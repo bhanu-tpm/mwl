@@ -1,6 +1,14 @@
 # Database Design
 
-_Status: Phase 0 draft, awaiting approval · Supabase Postgres_
+_Status: implemented in Phase 5 (2026-10-03) · Supabase Postgres_
+
+Schema lives in `supabase/migrations/` (source of truth). RLS was verified role by role (anon, non-admin, admin, server) against the local stack; see the Phase 5 commit.
+
+**Implementation notes**
+- Leads are inserted by `src/services/leads/create-lead.ts` with the secret key; the founder's email is sent in parallel, so either one succeeding counts as received.
+- Contact spam limit: `CONTACT_MAX_PER_IP_PER_HOUR` (default 5) counted from `leads.ip_hash`.
+- AI demo limits count `ai_demo_runs` rows with status success / rejected / error; prepared examples are never logged.
+- Admins: `npm run admin:create` (public sign-up disabled in `supabase/config.toml` and must also be disabled in the cloud dashboard).
 
 ## 8. Requirements
 
