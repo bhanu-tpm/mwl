@@ -26,7 +26,8 @@ loader showing our 4 capabilities (intro-loader.tsx, once per session) · hero "
 visual · Problem section = live SVG problems→outcomes flow + interactive picker that pre-fills
 /contact?problems=… · "AI in practice" industry explorer with human-in-the-loop runs · Phase 4 AI demo (/ai-demo,
 POST /api/ai-demo, Gemini provider, prepared examples, in-memory usage limits, contact pre-fill
-via ?brief=). Live AI needs GEMINI_API_KEY in .env.local; without it only examples work.
+via ?brief=). Live Gemini is working locally (GEMINI_API_KEY in .env.local, default model
+gemini-3.5-flash-lite; 2.5-flash-lite is retired). Never mention Tally anywhere in content.
 
 Known gaps:
 - Contact form does NOT store leads yet (dev logs to terminal; production shows an email
