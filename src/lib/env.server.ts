@@ -6,7 +6,8 @@ import { z } from "zod";
  * the demo then serves its built-in examples and reports live AI as unavailable.
  */
 const serverEnvSchema = z.object({
-  AI_PROVIDER: z.enum(["gemini"]).default("gemini"),
+  // "none" switches live AI off (prepared examples still work), e.g. for tests or quota issues.
+  AI_PROVIDER: z.enum(["gemini", "none"]).default("gemini"),
   AI_MODEL: z.string().min(1).default("gemini-3.5-flash-lite"),
   GEMINI_API_KEY: z.string().min(1).optional(),
   AI_DEMO_MAX_PER_IP_PER_HOUR: z.coerce.number().int().positive().default(5),
@@ -23,6 +24,10 @@ const serverEnvSchema = z.object({
   LEAD_NOTIFICATION_EMAIL: z.email().optional(),
   EMAIL_FROM: z.string().min(3).default("Mithila Web Labs <onboarding@resend.dev>"),
   CONTACT_MAX_PER_IP_PER_HOUR: z.coerce.number().int().positive().default(5),
+
+  // Header the host sets with the real visitor IP, e.g. "cf-connecting-ip" (Cloudflare) or
+  // "x-nf-client-connection-ip" (Netlify). Leave unset unless the site runs on that host.
+  CLIENT_IP_HEADER: z.string().trim().toLowerCase().min(1).optional(),
 });
 
 const parsed = serverEnvSchema.safeParse({
@@ -39,6 +44,7 @@ const parsed = serverEnvSchema.safeParse({
   LEAD_NOTIFICATION_EMAIL: process.env.LEAD_NOTIFICATION_EMAIL || undefined,
   EMAIL_FROM: process.env.EMAIL_FROM || undefined,
   CONTACT_MAX_PER_IP_PER_HOUR: process.env.CONTACT_MAX_PER_IP_PER_HOUR || undefined,
+  CLIENT_IP_HEADER: process.env.CLIENT_IP_HEADER || undefined,
 });
 
 if (!parsed.success) {

@@ -12,5 +12,5 @@ export function getAIProvider(): AIProvider {
 }
 
 export function isAIConfigured() {
-  return Boolean(serverEnv.GEMINI_API_KEY);
+  return serverEnv.AI_PROVIDER !== "none" && Boolean(serverEnv.GEMINI_API_KEY);
 }

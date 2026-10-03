@@ -20,19 +20,17 @@ export function hashIp(ip: string) {
 }
 
 /**
- * Best-effort client IP. Platform headers set by the host (Cloudflare, Netlify) come first
- * because visitors can't forge them. Otherwise use the *last* x-forwarded-for entry, which
- * the nearest proxy appended; the first entry is whatever the client chose to send.
+ * Best-effort client IP.
+ *
+ * A platform header (e.g. `cf-connecting-ip` on Cloudflare, `x-nf-client-connection-ip` on
+ * Netlify) is trusted ONLY when CLIENT_IP_HEADER names it, because on any other host a visitor
+ * could send that header themselves. Otherwise use the *last* x-forwarded-for entry, which the
+ * nearest proxy appended; the first entry is whatever the client chose to send.
  */
-export function clientIp(headers: Headers) {
+export function clientIp(headers: Headers, trustedHeader = serverEnv.CLIENT_IP_HEADER) {
+  const fromPlatform = trustedHeader ? headers.get(trustedHeader)?.trim() : undefined;
   const forwarded = headers.get("x-forwarded-for")?.split(",").map((s) => s.trim()).filter(Boolean);
-  return (
-    headers.get("cf-connecting-ip") ||
-    headers.get("x-nf-client-connection-ip") ||
-    forwarded?.at(-1) ||
-    headers.get("x-real-ip") ||
-    "unknown"
-  );
+  return fromPlatform || forwarded?.at(-1) || headers.get("x-real-ip") || "unknown";
 }
 
 export type LimitResult = { ok: true } | { ok: false; reason: "rate_limited" | "daily_limit" };

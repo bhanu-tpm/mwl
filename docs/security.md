@@ -26,7 +26,7 @@ _Status: Phase 6 (2026-10-03). Review again before go-live (Phase 8) and after a
 |---|---|
 | Contact form | Server-side Zod validation, honeypot, per-visitor hourly limit (DB), length limits in the schema and in Postgres `check` constraints |
 | AI demo | Input limits, prepared examples at zero cost, per-visitor hourly + site-wide daily caps (DB), prompt treats input as data, schema-validated output, provider safety blocks handled, no billing attached to the key |
-| Visitor identity | Only a salted SHA-256 hash of the IP is stored; platform client-IP headers preferred so `x-forwarded-for` can't be spoofed |
+| Visitor identity | Only a salted SHA-256 hash of the IP is stored. The IP comes from the proxy-appended `x-forwarded-for` entry, or from the host's own header when `CLIENT_IP_HEADER` names it (never trusted by default, since visitors can forge it elsewhere) |
 | Admin | `proxy.ts` (optimistic redirect + session refresh) → `requireAdmin()` on every page and action (`getUser()` verified with the auth server + `is_admin()`) → RLS in Postgres |
 | Auth | Public sign-up disabled, 12+ char passwords with letters and digits, generic login errors, Supabase's built-in sign-in rate limits |
 | Database | RLS on every table; anon and non-admins have no access; admins read leads/runs and update leads only (no delete); inserts only via the server's secret key |
@@ -38,4 +38,5 @@ _Status: Phase 6 (2026-10-03). Review again before go-live (Phase 8) and after a
 - [ ] Supabase: "Allow new users to sign up" off; email provider on; migrations applied with `supabase db push`.
 - [ ] Gemini key has no billing attached; Resend key scoped to sending.
 - [ ] `NEXT_PUBLIC_SITE_URL` is the https production URL (enables `upgrade-insecure-requests`).
+- [ ] `CLIENT_IP_HEADER` set to the host's client-IP header (Cloudflare: `cf-connecting-ip`; Netlify: `x-nf-client-connection-ip`).
 - [ ] Re-run the CSP issue check and axe scan on the live URL.
