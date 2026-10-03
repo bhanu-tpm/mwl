@@ -1,3 +1,4 @@
+import { IntroLoader } from "@/components/layout/intro-loader";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SkipLink } from "@/components/layout/skip-link";
@@ -5,6 +6,7 @@ import { SkipLink } from "@/components/layout/skip-link";
 export default function MarketingLayout({ children }: LayoutProps<"/">) {
   return (
     <>
+      <IntroLoader />
       <SkipLink />
       <SiteHeader />
       <main id="main" className="flex-1">

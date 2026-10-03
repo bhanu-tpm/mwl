@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
-import { IntroLoader, introScript } from "@/components/layout/intro-loader";
+import { introScript } from "@/components/layout/intro-loader";
 import { siteConfig } from "@/config/site";
 import "@/styles/globals.css";
 
@@ -53,7 +53,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: introScript }} />
       </head>
       <body className="flex min-h-full flex-col">
-        <IntroLoader />
         {children}
       </body>
     </html>
