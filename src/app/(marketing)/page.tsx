@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRightIcon, CheckIcon, ShieldCheckIcon } from "lucide-react";
+import { ArrowRightIcon, CheckIcon, ShieldCheckIcon, SparklesIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/container";
 import { InkBand } from "@/components/layout/ink-band";
@@ -175,9 +175,9 @@ export default function HomePage() {
 
           <div className="mt-14 flex flex-col gap-3 sm:flex-row">
             <Button asChild variant="brand" size="lg">
-              <Link href="/contact">
-                Describe your process
-                <ArrowRightIcon data-icon="inline-end" />
+              <Link href="/ai-demo">
+                <SparklesIcon data-icon="inline-start" />
+                Try it with your own process
               </Link>
             </Button>
             <Button asChild variant="outline-ink" size="lg">

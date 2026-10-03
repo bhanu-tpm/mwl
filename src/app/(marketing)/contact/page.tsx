@@ -30,9 +30,11 @@ const nextSteps = [
 
 export default async function ContactPage({ searchParams }: PageProps<"/contact">) {
   const { contact } = siteConfig;
-  // Problems picked on the home page arrive as ?problems=excel,approvals.
-  const { problems } = await searchParams;
-  const defaultProblem = problemsToEnquiry(String(problems ?? "").split(","));
+  // Pre-fill from the home page picker (?problems=excel,approvals) or the AI demo (?brief=…).
+  const { problems, brief } = await searchParams;
+  const defaultProblem =
+    problemsToEnquiry(String(problems ?? "").split(",")) ||
+    (typeof brief === "string" ? brief.slice(0, 1200) : "");
 
   return (
     <>
