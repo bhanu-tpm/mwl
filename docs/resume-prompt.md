@@ -18,29 +18,33 @@ and `git log --oneline -30`.
   that aren't true (no fake clients, metrics, or testimonials).
 - Explain changes briefly in plain language; I test on my phone at http://<mac-ip>:3000.
 
-## Current state (as of 2026-10-03)
+## Current state (as of 2026-10-03, after Phase 4)
 Done: Phase 0 docs · Phase 1 foundation (Next.js 16, Tailwind v4, shadcn/ui, CI) · Phase 2 pages
 (Home, Solutions, How We Work, About, Contact form UI + server validation, Privacy) · premium
 "ink" design pass · neural-net "mwl" logo (src/components/layout/logo.tsx) · first-visit intro
 loader showing our 4 capabilities (intro-loader.tsx, once per session) · hero "tools → products"
 visual · Problem section = live SVG problems→outcomes flow + interactive picker that pre-fills
-/contact?problems=… · "AI in practice" industry explorer with human-in-the-loop runs.
+/contact?problems=… · "AI in practice" industry explorer with human-in-the-loop runs · Phase 4 AI demo (/ai-demo,
+POST /api/ai-demo, Gemini provider, prepared examples, in-memory usage limits, contact pre-fill
+via ?brief=). Live AI needs GEMINI_API_KEY in .env.local; without it only examples work.
 
 Known gaps:
 - Contact form does NOT store leads yet (dev logs to terminal; production shows an email
   fallback). Storage + notifications come in Phase 5.
-- /portfolio, /portfolio/[slug], and /ai-demo return 404. Portfolio (Phase 3) is ON HOLD until
+- /portfolio and /portfolio/[slug] return 404. Portfolio (Phase 3) is ON HOLD until
   I share CompanyBrainAI details.
 - Contact email in src/config/site.ts is a placeholder; WhatsApp and founder details are empty.
 - The intro's inline script must be allowed by the CSP in Phase 6 (hash).
 
-## Next task: Phase 4 — AI business-problem demo
-Follow docs/ai-architecture.md: gemini-provider.ts behind the AIProvider interface, Zod output
-contract, POST /api/ai-demo (server-side key only), cached preset examples at zero cost, input
-limits, per-IP + daily caps, friendly error/rate-limit states, the "suggestion, not advice"
-disclaimer, a "Discuss this with us" button that pre-fills the contact form, and an /ai-demo page
-plus a home-page entry point that fits the existing design. It must work without a key (presets
-only) until I add GEMINI_API_KEY to .env.local.
+## Next task: Phase 5 — Supabase (leads, demo logs, admin)
+Follow docs/database-design.md: SQL migrations in supabase/migrations with RLS on every table
+(leads, ai_demo_runs, admin_users + is_admin()); lead storage from the contact server action
+(src/services/leads/create-lead.ts) with honeypot + DB-backed rate limit; Resend email to the
+founder sent independently of the DB insert; move AI demo limits from src/services/rate-limit.ts
+to counts on ai_demo_runs and log each run; Supabase Auth admin login (sign-ups disabled) and a
+minimal /admin leads list/detail with status + notes. I must create the free Supabase project
+and Resend account myself — give me exact steps and the env vars to set, and keep everything
+working locally until I do.
 
 Start by summarising what you found in the repo and your Phase 4 plan in a few lines, then
 build it. Ask me only if something is genuinely blocked.
