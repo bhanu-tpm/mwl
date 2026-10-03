@@ -18,7 +18,7 @@ and `git log --oneline -30`.
   that aren't true (no fake clients, metrics, or testimonials).
 - Explain changes briefly in plain language; I test on my phone at http://<mac-ip>:3000.
 
-## Current state (as of 2026-10-03, after Phase 5)
+## Current state (as of 2026-10-03, after Phase 6)
 Done: Phase 0 docs · Phase 1 foundation (Next.js 16, Tailwind v4, shadcn/ui, CI) · Phase 2 pages
 (Home, Solutions, How We Work, About, Contact form UI + server validation, Privacy) · premium
 "ink" design pass · neural-net "mwl" logo (src/components/layout/logo.tsx) · first-visit intro
@@ -29,25 +29,24 @@ POST /api/ai-demo, Gemini provider, prepared examples, in-memory usage limits, c
 via ?brief=) · Phase 5: local Supabase (Docker, ports 553xx, `npm run db:start`) with
 RLS-verified schema, leads stored + Resend email (email needs RESEND_API_KEY), DB-backed demo
 limits + run log, protected /admin (proxy.ts + DAL + RLS), `npm run admin:create`, keep-alive
-workflow. Live Gemini was working locally (GEMINI_API_KEY in .env.local, default model
+workflow · Phase 6: sitemap/robots, branded OG images, JSON-LD, no-nonce CSP (0 violations),
+error boundaries, axe 0 violations, Lighthouse 100/100/100 (a11y/best/SEO), perf 93–95. Portfolio
+links point to /#work and /contact until Phase 3. Live Gemini was working locally (GEMINI_API_KEY in .env.local, default model
 gemini-3.5-flash-lite; 2.5-flash-lite is retired). Never mention Tally anywhere in content.
 
 Known gaps:
 - Gemini key in .env.local was replaced with a non-API-key token (starts "AQ.", returns 401);
   it must be an AI Studio API key starting "AIza". Lead emails need a Resend key.
-- The founder still needs to run `npm run admin:create` for their own admin login.
 - /portfolio and /portfolio/[slug] return 404. Portfolio (Phase 3) is ON HOLD until
   I share CompanyBrainAI details.
 - Contact email in src/config/site.ts is a placeholder; WhatsApp and founder details are empty.
-- The intro's inline script must be allowed by the CSP in Phase 6 (hash).
 
-## Next task: Phase 6 — SEO, security, performance, error handling
-SEO: sitemap.ts, robots.ts (disallow /admin, /api), OG image (opengraph-image.tsx in the brand
-style), JSON-LD (Organization, WebSite, Service, BreadcrumbList), canonical URLs already in
-pageMetadata. Security: Content-Security-Policy with a hash for the intro's inline script (or
-nonce), plus review headers; check no secrets reach client bundles. Performance: Lighthouse on
-key pages, image/font checks, keep JS small. Errors: app/error.tsx and global-error, friendly
-404 already exists. Accessibility pass (axe) on all pages, desktop and mobile.
+## Next task: Phase 7 — Testing
+Add an automated test suite that CI runs: Vitest for unit tests (lead/demo schemas, rate-limit
+helpers, clientIp, Gemini provider with mocked fetch, problemsToEnquiry, JSON-LD builders) and
+Playwright e2e against `next start` + the local Supabase (home interactions, AI demo examples,
+contact form → lead stored, spam limit, admin auth incl. non-admin, CSP issue check, axe scan,
+mobile viewport). Keep tests fast and deterministic (no real Gemini calls). Then Phase 8 deploy.
 
-Start by summarising what you found in the repo and your Phase 6 plan in a few lines, then
+Start by summarising what you found in the repo and your Phase 7 plan in a few lines, then
 build it. Ask me only if something is genuinely blocked.
