@@ -3,11 +3,9 @@ import { createHash } from "node:crypto";
 import { serverEnv } from "@/lib/env.server";
 
 /**
- * AI demo usage limits: per visitor per hour, plus a global daily ceiling.
- *
- * Interim in-memory store (per server instance, resets on restart). Phase 5 replaces it with
- * counts from the `ai_demo_runs` table, which also works across serverless instances
- * (docs/database-design.md). The final cost backstop is the provider's free-tier quota:
+ * Visitor identity helpers, plus the in-memory fallback for AI demo limits (per server
+ * instance, resets on restart). With a database, limits come from `ai_demo_runs` instead
+ * (src/services/ai/demo-runs.ts). The final cost backstop is the provider's free-tier quota:
  * no billing account is attached to the key.
  */
 
@@ -39,8 +37,8 @@ export function clientIp(headers: Headers) {
 
 export type LimitResult = { ok: true } | { ok: false; reason: "rate_limited" | "daily_limit" };
 
-/** Checks and, if allowed, records one AI run for this visitor. */
-export function consumeDemoRun(ipHash: string, now = Date.now()): LimitResult {
+/** In-memory fallback: checks and, if allowed, records one AI run for this visitor. */
+export function consumeDemoRunInMemory(ipHash: string, now = Date.now()): LimitResult {
   const today = new Date(now).toISOString().slice(0, 10);
   if (day.key !== today) day = { key: today, count: 0 };
   if (day.count >= serverEnv.AI_DEMO_MAX_PER_DAY) return { ok: false, reason: "daily_limit" };

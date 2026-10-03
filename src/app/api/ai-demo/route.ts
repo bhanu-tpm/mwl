@@ -1,9 +1,11 @@
+import { after } from "next/server";
 import { findExample } from "@/content/demo-examples";
 import { demoInputSchema, type DemoErrorCode, type DemoResponse } from "@/lib/validation/demo.schema";
 import { isAIConfigured } from "@/services/ai";
 import { analyzeBusinessProblem } from "@/services/ai/business-analyzer";
 import { AIProviderError } from "@/services/ai/provider";
-import { clientIp, consumeDemoRun, hashIp } from "@/services/rate-limit";
+import { checkDemoLimit, logDemoRun } from "@/services/ai/demo-runs";
+import { clientIp, hashIp } from "@/services/rate-limit";
 
 const messages: Record<DemoErrorCode, string> = {
   invalid_input: "Please describe the process in a sentence or two.",
@@ -51,19 +53,31 @@ export async function POST(request: Request) {
 
   // 3. Usage limits before any quota-bound call (no key → nothing to protect or count).
   if (!isAIConfigured()) return error("not_configured");
-  const limit = consumeDemoRun(hashIp(clientIp(request.headers)));
-  if (!limit.ok) return error(limit.reason);
+  const ipHash = hashIp(clientIp(request.headers));
+  const limit = await checkDemoLimit(ipHash);
+  if (!limit.ok) {
+    after(() => logDemoRun({ input, ipHash, status: "rate_limited", errorKind: limit.reason }));
+    return error(limit.reason);
+  }
 
   // 4. Ask the model; every response is validated against the output contract.
+  //    Each run is logged after the response is sent (ai_demo_runs, 90-day retention).
   try {
-    const result = await analyzeBusinessProblem(input);
+    const { result, meta } = await analyzeBusinessProblem(input);
+    after(() =>
+      logDemoRun({
+        input,
+        ipHash,
+        status: result.isBusinessProblem ? "success" : "rejected",
+        output: result,
+        ...meta,
+      }),
+    );
     return Response.json({ status: "ok", source: "ai", result } satisfies DemoResponse);
   } catch (err) {
-    if (err instanceof AIProviderError) {
-      console.warn("[ai-demo] provider error:", err.kind, err.message.slice(0, 200));
-      return error(err.kind === "not_configured" ? "not_configured" : "unavailable");
-    }
-    console.error("[ai-demo] unexpected error:", err);
-    return error("unavailable");
+    const kind = err instanceof AIProviderError ? err.kind : "unexpected";
+    console.warn("[ai-demo] provider error:", kind, String(err instanceof Error ? err.message : err).slice(0, 200));
+    after(() => logDemoRun({ input, ipHash, status: "error", errorKind: kind }));
+    return error(kind === "not_configured" ? "not_configured" : "unavailable");
   }
 }

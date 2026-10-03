@@ -8,9 +8,13 @@ import {
 } from "./prompts/business-analyzer";
 
 /** Turns a visitor's description of a process into a structured, practical suggestion. */
-export async function analyzeBusinessProblem(input: string): Promise<DemoResult> {
+export async function analyzeBusinessProblem(input: string): Promise<{
+  result: DemoResult;
+  meta: { provider: string; model: string; promptVersion: string; inputTokens: number; outputTokens: number; latencyMs: number };
+}> {
   const started = Date.now();
-  const { data, model, usage } = await getAIProvider().generateStructured({
+  const provider = getAIProvider();
+  const { data, model, usage } = await provider.generateStructured({
     system: BUSINESS_ANALYZER_SYSTEM,
     input: wrapProcess(input),
     schema: demoResultSchema,
@@ -18,13 +22,14 @@ export async function analyzeBusinessProblem(input: string): Promise<DemoResult>
     timeoutMs: 20_000,
   });
 
-  // Phase 5 stores this in ai_demo_runs; until then, a server log line.
-  console.info("[ai-demo]", {
-    prompt: BUSINESS_ANALYZER_PROMPT_VERSION,
-    model,
-    ...usage,
-    latencyMs: Date.now() - started,
-    isBusinessProblem: data.isBusinessProblem,
-  });
-  return data;
+  return {
+    result: data,
+    meta: {
+      provider: provider.name,
+      model,
+      promptVersion: BUSINESS_ANALYZER_PROMPT_VERSION,
+      ...usage,
+      latencyMs: Date.now() - started,
+    },
+  };
 }
