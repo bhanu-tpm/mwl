@@ -8,33 +8,33 @@ export type DemoExample = { id: string; label: string; input: string; result: De
 
 export const demoExamples: DemoExample[] = [
   {
-    id: "invoices",
-    label: "Invoices from email",
+    id: "service-requests",
+    label: "Customer service requests",
     input:
-      "Our accounts team receives around 300 supplier invoices a month by email. They open each PDF and type the details into Excel and then into Tally.",
+      "Customers email and call us to raise service requests and ask for updates. Our support team logs them in a shared Excel sheet, and follow-ups are often missed.",
     result: {
       isBusinessProblem: true,
-      problemSummary: "Manual invoice processing from email",
+      problemSummary: "Service requests tracked in a shared spreadsheet",
       suggestedSolution:
-        "AI reads each emailed invoice, checks it against purchase orders, and sends it for one-click approval before posting to Tally.",
+        "A customer portal where requests are raised, assigned, and tracked in one place, with automatic status updates so customers stop chasing.",
       workflow: [
-        { label: "Invoice email arrives", type: "input" },
-        { label: "AI extracts details", type: "ai" },
-        { label: "Match with PO", type: "system" },
-        { label: "Accounts approves", type: "human" },
-        { label: "Posted to Tally", type: "output" },
+        { label: "Customer raises request", type: "input" },
+        { label: "AI sorts by type & urgency", type: "ai" },
+        { label: "Assigned to a technician", type: "system" },
+        { label: "Team resolves & updates", type: "human" },
+        { label: "Customer notified", type: "output" },
       ],
       benefits: [
-        "No more retyping invoice details",
-        "Mismatches caught before payment",
-        "Clear record of who approved what",
-        "Faster month-end closing",
+        "Every request has an owner and a status",
+        "Customers check progress themselves",
+        "Fewer missed follow-ups",
+        "Clear view of open and overdue requests",
       ],
       considerations: [
-        "Needs read access to the invoices inbox and your Tally setup",
-        "Unusual invoice formats may need a person to check at first",
+        "Customers need a simple login, or a tracking link sent by email",
+        "Urgency rules should be agreed with the support team first",
       ],
-      solutionCategory: "automation",
+      solutionCategory: "portal",
     },
   },
   {
