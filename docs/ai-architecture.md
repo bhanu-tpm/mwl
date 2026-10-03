@@ -1,6 +1,24 @@
 # AI Architecture
 
-_Status: Phase 0 draft, awaiting approval_
+_Status: implemented in Phase 4 (2026-10-03)_
+
+## Implementation map
+| Piece | File |
+|---|---|
+| Output contract + input limits | `src/lib/validation/demo.schema.ts` |
+| Provider interface + errors | `src/services/ai/provider.ts` |
+| Gemini provider (REST `generateContent`, JSON schema from Zod) | `src/services/ai/gemini-provider.ts` |
+| Provider selection | `src/services/ai/index.ts` |
+| Prompt (versioned) | `src/services/ai/prompts/business-analyzer.ts` |
+| Analyzer | `src/services/ai/business-analyzer.ts` |
+| Prepared examples (zero cost) | `src/content/demo-examples.ts` |
+| Usage limits (interim, in-memory) | `src/services/rate-limit.ts` |
+| API route | `src/app/api/ai-demo/route.ts` |
+| UI | `src/components/demo/ai-demo.tsx`, `src/app/(marketing)/ai-demo/page.tsx` |
+
+**Interim limits:** per-IP and daily caps are held in memory per server instance until Phase 5 moves them to the `ai_demo_runs` table. The real cost backstop is the free-tier quota (no billing attached).
+
+**Without `GEMINI_API_KEY`:** prepared examples work; custom input returns `not_configured` and the UI offers the contact form.
 
 ## 9. Goals
 1. Show useful AI for business problems in under 10 seconds.
