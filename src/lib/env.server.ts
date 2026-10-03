@@ -12,6 +12,17 @@ const serverEnvSchema = z.object({
   AI_DEMO_MAX_PER_IP_PER_HOUR: z.coerce.number().int().positive().default(5),
   AI_DEMO_MAX_PER_DAY: z.coerce.number().int().positive().default(200),
   IP_HASH_SALT: z.string().min(16).optional(),
+
+  // Supabase (Phase 5). Optional so the site still runs without a database.
+  NEXT_PUBLIC_SUPABASE_URL: z.url().optional(),
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1).optional(),
+  SUPABASE_SECRET_KEY: z.string().min(1).optional(),
+
+  // Lead notification email via Resend (Phase 5). Optional.
+  RESEND_API_KEY: z.string().min(1).optional(),
+  LEAD_NOTIFICATION_EMAIL: z.email().optional(),
+  EMAIL_FROM: z.string().min(3).default("Mithila Web Labs <onboarding@resend.dev>"),
+  CONTACT_MAX_PER_IP_PER_HOUR: z.coerce.number().int().positive().default(5),
 });
 
 const parsed = serverEnvSchema.safeParse({
@@ -21,6 +32,13 @@ const parsed = serverEnvSchema.safeParse({
   AI_DEMO_MAX_PER_IP_PER_HOUR: process.env.AI_DEMO_MAX_PER_IP_PER_HOUR || undefined,
   AI_DEMO_MAX_PER_DAY: process.env.AI_DEMO_MAX_PER_DAY || undefined,
   IP_HASH_SALT: process.env.IP_HASH_SALT || undefined,
+  NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || undefined,
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || undefined,
+  SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY || undefined,
+  RESEND_API_KEY: process.env.RESEND_API_KEY || undefined,
+  LEAD_NOTIFICATION_EMAIL: process.env.LEAD_NOTIFICATION_EMAIL || undefined,
+  EMAIL_FROM: process.env.EMAIL_FROM || undefined,
+  CONTACT_MAX_PER_IP_PER_HOUR: process.env.CONTACT_MAX_PER_IP_PER_HOUR || undefined,
 });
 
 if (!parsed.success) {
@@ -28,3 +46,12 @@ if (!parsed.success) {
 }
 
 export const serverEnv = parsed.data;
+
+export const isDatabaseConfigured = () =>
+  Boolean(serverEnv.NEXT_PUBLIC_SUPABASE_URL && serverEnv.SUPABASE_SECRET_KEY);
+
+export const isAuthConfigured = () =>
+  Boolean(serverEnv.NEXT_PUBLIC_SUPABASE_URL && serverEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+
+export const isEmailConfigured = () =>
+  Boolean(serverEnv.RESEND_API_KEY && serverEnv.LEAD_NOTIFICATION_EMAIL);

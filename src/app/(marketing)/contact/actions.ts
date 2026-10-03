@@ -1,7 +1,9 @@
 "use server";
 
+import { headers } from "next/headers";
 import { z } from "zod";
 import { createLead } from "@/services/leads/create-lead";
+import { clientIp, hashIp } from "@/services/rate-limit";
 import { leadSchema, type LeadField } from "@/lib/validation/lead.schema";
 
 export type ContactFormState = {
@@ -41,7 +43,19 @@ export async function submitLead(
     };
   }
 
-  const result = await createLead(parsed.data);
+  const h = await headers();
+  const result = await createLead(parsed.data, {
+    ipHash: hashIp(clientIp(h)),
+    userAgent: h.get("user-agent") ?? undefined,
+  });
+  if (!result.ok && result.reason === "rate_limited") {
+    return {
+      status: "error",
+      message:
+        "We've already received several messages from you in the last hour. We'll be in touch soon, or email us directly.",
+      values: raw,
+    };
+  }
   if (!result.ok) {
     return {
       status: "error",
