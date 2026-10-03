@@ -7,7 +7,7 @@ import { z } from "zod";
  */
 const serverEnvSchema = z.object({
   AI_PROVIDER: z.enum(["gemini"]).default("gemini"),
-  AI_MODEL: z.string().min(1).default("gemini-2.5-flash-lite"),
+  AI_MODEL: z.string().min(1).default("gemini-3.5-flash-lite"),
   GEMINI_API_KEY: z.string().min(1).optional(),
   AI_DEMO_MAX_PER_IP_PER_HOUR: z.coerce.number().int().positive().default(5),
   AI_DEMO_MAX_PER_DAY: z.coerce.number().int().positive().default(200),

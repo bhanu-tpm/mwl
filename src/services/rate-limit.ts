@@ -21,8 +21,20 @@ export function hashIp(ip: string) {
   return createHash("sha256").update(`${salt}:${ip}`).digest("hex").slice(0, 32);
 }
 
+/**
+ * Best-effort client IP. Platform headers set by the host (Cloudflare, Netlify) come first
+ * because visitors can't forge them. Otherwise use the *last* x-forwarded-for entry, which
+ * the nearest proxy appended; the first entry is whatever the client chose to send.
+ */
 export function clientIp(headers: Headers) {
-  return headers.get("x-forwarded-for")?.split(",")[0]?.trim() || headers.get("x-real-ip") || "unknown";
+  const forwarded = headers.get("x-forwarded-for")?.split(",").map((s) => s.trim()).filter(Boolean);
+  return (
+    headers.get("cf-connecting-ip") ||
+    headers.get("x-nf-client-connection-ip") ||
+    forwarded?.at(-1) ||
+    headers.get("x-real-ip") ||
+    "unknown"
+  );
 }
 
 export type LimitResult = { ok: true } | { ok: false; reason: "rate_limited" | "daily_limit" };
