@@ -59,10 +59,18 @@ export function SiteFooter() {
         </nav>
       </Container>
 
+      {/* Decorative wordmark drawn as SVG so it isn't treated as (low-contrast) body text. */}
       <Container aria-hidden="true" className="overflow-hidden">
-        <p className="select-none whitespace-nowrap text-[clamp(2.5rem,10.5vw,8rem)] leading-[0.8] font-semibold tracking-[-0.06em] text-white/[0.05]">
-          Mithila Web Labs
-        </p>
+        <svg viewBox="0 0 1236 150" className="block h-auto w-full select-none" focusable="false">
+          <text
+            x="0"
+            y="128"
+            className="fill-white/[0.05] font-sans font-semibold"
+            style={{ fontSize: 170, letterSpacing: "-0.06em" }}
+          >
+            Mithila Web Labs
+          </text>
+        </svg>
       </Container>
 
       <div className="border-t border-ink-border">

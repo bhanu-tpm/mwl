@@ -26,10 +26,11 @@ export function ProjectCard({ project }: { project: ProjectSummary }) {
           ))}
         </ul>
         <Link
-          href={`/portfolio/${project.slug}`}
+          // Project detail pages arrive with the portfolio (Phase 3); until then, invite a conversation.
+          href={`/contact?brief=${encodeURIComponent(`I'd like to know more about ${project.name}.`)}`}
           className="group mt-10 inline-flex w-fit items-center gap-2 rounded-full bg-ink-foreground px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-white"
         >
-          View project details
+          Ask us about this project
           <ArrowRightIcon aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </article>

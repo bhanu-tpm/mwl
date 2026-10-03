@@ -5,7 +5,8 @@ export type NavItem = {
 
 export const mainNav: NavItem[] = [
   { label: "Solutions", href: "/solutions" },
-  { label: "Portfolio", href: "/portfolio" },
+  // Until the portfolio pages exist (Phase 3), link to the featured-work section on Home.
+  { label: "Portfolio", href: "/#work" },
   { label: "AI Demo", href: "/ai-demo" },
   { label: "How We Work", href: "/how-we-work" },
   { label: "About", href: "/about" },
@@ -29,7 +30,7 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
     title: "Work",
     items: [
       { label: "Solutions", href: "/solutions" },
-      { label: "Portfolio", href: "/portfolio" },
+      { label: "Portfolio", href: "/#work" },
       { label: "AI Demo", href: "/ai-demo" },
     ],
   },
