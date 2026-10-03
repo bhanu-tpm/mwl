@@ -31,18 +31,21 @@ test("a signed-in non-admin cannot get in", async ({ page }) => {
 });
 
 test("an admin can review a lead, update it, and sign out", async ({ page }) => {
-  const email = `admin-flow-${randomUUID().slice(0, 8)}@${E2E_DOMAIN}`;
+  const tag = randomUUID().slice(0, 8);
+  const name = `E2E Admin Flow ${tag}`; // unique per attempt, so retries never pick another run's lead
+  const email = `admin-flow-${tag}@${E2E_DOMAIN}`;
   const { data: lead, error } = await adminDb()
     .from("leads")
-    .insert({ name: "E2E Admin Flow", email, problem_description: "E2E: quotes are prepared by hand in Word.", ip_hash: "e2e" })
+    .insert({ name, email, problem_description: "E2E: quotes are prepared by hand in Word.", ip_hash: "e2e" })
     .select("id")
     .single();
   expect(error).toBeNull();
 
   await signIn(page, ADMIN);
   await expect(page).toHaveURL(/\/admin$/);
-  await page.getByRole("link", { name: /E2E Admin Flow/ }).click();
+  await page.getByRole("link", { name: new RegExp(name) }).click();
   await expect(page).toHaveURL(new RegExp(`/admin/leads/${lead!.id}$`));
+  await page.waitForLoadState("networkidle"); // hydrated before editing the form
   await expect(page.locator("main")).toContainText("quotes are prepared by hand");
 
   await page.locator("#status").selectOption("proposal");
@@ -54,7 +57,7 @@ test("an admin can review a lead, update it, and sign out", async ({ page }) => 
   expect(data).toEqual({ status: "proposal", notes: "E2E: quote sent on Friday." });
 
   await page.goto("/admin?status=proposal");
-  await expect(page.getByRole("link", { name: /E2E Admin Flow/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: new RegExp(name) })).toBeVisible();
 
   await page.getByRole("button", { name: "Sign out" }).click();
   await expect(page).toHaveURL(/\/admin\/login$/);
