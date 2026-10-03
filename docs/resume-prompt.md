@@ -46,5 +46,5 @@ minimal /admin leads list/detail with status + notes. I must create the free Sup
 and Resend account myself — give me exact steps and the env vars to set, and keep everything
 working locally until I do.
 
-Start by summarising what you found in the repo and your Phase 4 plan in a few lines, then
+Start by summarising what you found in the repo and your Phase 5 plan in a few lines, then
 build it. Ask me only if something is genuinely blocked.
