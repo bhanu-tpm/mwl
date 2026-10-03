@@ -18,7 +18,7 @@ and `git log --oneline -30`.
   that aren't true (no fake clients, metrics, or testimonials).
 - Explain changes briefly in plain language; I test on my phone at http://<mac-ip>:3000.
 
-## Current state (as of 2026-10-03, after Phase 4)
+## Current state (as of 2026-10-03, after Phase 5)
 Done: Phase 0 docs · Phase 1 foundation (Next.js 16, Tailwind v4, shadcn/ui, CI) · Phase 2 pages
 (Home, Solutions, How We Work, About, Contact form UI + server validation, Privacy) · premium
 "ink" design pass · neural-net "mwl" logo (src/components/layout/logo.tsx) · first-visit intro
@@ -26,26 +26,28 @@ loader showing our 4 capabilities (intro-loader.tsx, once per session) · hero "
 visual · Problem section = live SVG problems→outcomes flow + interactive picker that pre-fills
 /contact?problems=… · "AI in practice" industry explorer with human-in-the-loop runs · Phase 4 AI demo (/ai-demo,
 POST /api/ai-demo, Gemini provider, prepared examples, in-memory usage limits, contact pre-fill
-via ?brief=). Live Gemini is working locally (GEMINI_API_KEY in .env.local, default model
+via ?brief=) · Phase 5: local Supabase (Docker, ports 553xx, `npm run db:start`) with
+RLS-verified schema, leads stored + Resend email (email needs RESEND_API_KEY), DB-backed demo
+limits + run log, protected /admin (proxy.ts + DAL + RLS), `npm run admin:create`, keep-alive
+workflow. Live Gemini was working locally (GEMINI_API_KEY in .env.local, default model
 gemini-3.5-flash-lite; 2.5-flash-lite is retired). Never mention Tally anywhere in content.
 
 Known gaps:
-- Contact form does NOT store leads yet (dev logs to terminal; production shows an email
-  fallback). Storage + notifications come in Phase 5.
+- Gemini key in .env.local was replaced with a non-API-key token (starts "AQ.", returns 401);
+  it must be an AI Studio API key starting "AIza". Lead emails need a Resend key.
+- The founder still needs to run `npm run admin:create` for their own admin login.
 - /portfolio and /portfolio/[slug] return 404. Portfolio (Phase 3) is ON HOLD until
   I share CompanyBrainAI details.
 - Contact email in src/config/site.ts is a placeholder; WhatsApp and founder details are empty.
 - The intro's inline script must be allowed by the CSP in Phase 6 (hash).
 
-## Next task: Phase 5 — Supabase (leads, demo logs, admin)
-Follow docs/database-design.md: SQL migrations in supabase/migrations with RLS on every table
-(leads, ai_demo_runs, admin_users + is_admin()); lead storage from the contact server action
-(src/services/leads/create-lead.ts) with honeypot + DB-backed rate limit; Resend email to the
-founder sent independently of the DB insert; move AI demo limits from src/services/rate-limit.ts
-to counts on ai_demo_runs and log each run; Supabase Auth admin login (sign-ups disabled) and a
-minimal /admin leads list/detail with status + notes. I must create the free Supabase project
-and Resend account myself — give me exact steps and the env vars to set, and keep everything
-working locally until I do.
+## Next task: Phase 6 — SEO, security, performance, error handling
+SEO: sitemap.ts, robots.ts (disallow /admin, /api), OG image (opengraph-image.tsx in the brand
+style), JSON-LD (Organization, WebSite, Service, BreadcrumbList), canonical URLs already in
+pageMetadata. Security: Content-Security-Policy with a hash for the intro's inline script (or
+nonce), plus review headers; check no secrets reach client bundles. Performance: Lighthouse on
+key pages, image/font checks, keep JS small. Errors: app/error.tsx and global-error, friendly
+404 already exists. Accessibility pass (axe) on all pages, desktop and mobile.
 
-Start by summarising what you found in the repo and your Phase 5 plan in a few lines, then
+Start by summarising what you found in the repo and your Phase 6 plan in a few lines, then
 build it. Ask me only if something is genuinely blocked.
