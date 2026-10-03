@@ -4,6 +4,7 @@ import { CtaBand } from "@/components/sections/cta-band";
 import { PageHero } from "@/components/sections/page-hero";
 import { capabilities, founder, principles } from "@/content/about";
 import { pageMetadata } from "@/lib/seo";
+import { JsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 
 export const metadata = pageMetadata({
   title: "About — Business-First Product Engineering",
@@ -15,6 +16,7 @@ export const metadata = pageMetadata({
 export default function AboutPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "About", path: "/about" }])} />
       <PageHero
         eyebrow="About"
         title={<>We build practical technology for <span className="accent-serif">real businesses</span></>}
@@ -70,11 +72,13 @@ export default function AboutPage() {
         <SectionHeader eyebrow="Principles" title={<>How we make <span className="accent-serif">decisions</span></>} />
         <dl className="mt-12 divide-y border-y">
           {principles.map((p, i) => (
-            <div key={p.title} className="grid gap-2 py-6 md:grid-cols-[4rem_1fr_2fr] md:gap-8">
-              <span className="font-mono text-xs text-muted-foreground md:pt-1">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <dt className="font-semibold">{p.title}</dt>
+            <div key={p.title} className="grid gap-2 py-6 md:grid-cols-[1fr_2fr] md:gap-8">
+              <dt className="flex gap-6 font-semibold md:gap-10">
+                <span className="w-6 shrink-0 pt-1 font-mono text-xs font-normal text-muted-foreground">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                {p.title}
+              </dt>
               <dd className="text-muted-foreground">{p.description}</dd>
             </div>
           ))}

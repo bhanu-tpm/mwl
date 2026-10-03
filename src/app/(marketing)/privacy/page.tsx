@@ -1,6 +1,7 @@
 import { Container } from "@/components/layout/container";
 import { siteConfig } from "@/config/site";
 import { pageMetadata } from "@/lib/seo";
+import { JsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 
 export const metadata = pageMetadata({
   title: "Privacy Policy",
@@ -16,6 +17,8 @@ export default function PrivacyPage() {
   const { name, contact } = siteConfig;
 
   return (
+    <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Privacy Policy", path: "/privacy" }])} />
     <Container className="py-16 sm:py-24">
       <article className="mx-auto max-w-3xl">
         <p className="eyebrow">Legal</p>
@@ -136,5 +139,6 @@ export default function PrivacyPage() {
         </div>
       </article>
     </Container>
+    </>
   );
 }

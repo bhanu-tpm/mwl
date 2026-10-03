@@ -4,6 +4,7 @@ import { FaqList } from "@/components/sections/faq-list";
 import { PageHero } from "@/components/sections/page-hero";
 import { engagementSteps, faqs } from "@/content/process";
 import { pageMetadata } from "@/lib/seo";
+import { JsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 
 export const metadata = pageMetadata({
   title: "How We Work — From Business Problem to Working Software",
@@ -15,6 +16,20 @@ export const metadata = pageMetadata({
 export default function HowWeWorkPage() {
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([{ name: "How We Work", path: "/how-we-work" }]),
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((f) => ({
+              "@type": "Question",
+              name: f.question,
+              acceptedAnswer: { "@type": "Answer", text: f.answer },
+            })),
+          },
+        ]}
+      />
       <PageHero
         eyebrow="How we work"
         title={<>Simple process. Working software early. <span className="accent-serif">No surprises.</span></>}

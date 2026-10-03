@@ -4,6 +4,7 @@ import { InkBand } from "@/components/layout/ink-band";
 import { Eyebrow, Section, SectionHeader } from "@/components/layout/section";
 import { AiDemo } from "@/components/demo/ai-demo";
 import { pageMetadata } from "@/lib/seo";
+import { JsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 
 export const metadata = pageMetadata({
   title: "AI Demo — See How Your Process Could Be Automated",
@@ -33,6 +34,7 @@ const howItWorks = [
 export default function AiDemoPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "AI Demo", path: "/ai-demo" }])} />
       <InkBand glow="center">
         <Container className="max-w-4xl pt-16 pb-20 sm:pt-24 sm:pb-28">
           <div className="animate-rise text-center">

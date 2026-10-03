@@ -6,6 +6,7 @@ import { WorkflowChain } from "@/components/sections/workflow-chain";
 import { solutions, type Solution } from "@/content/solutions";
 import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+import { JsonLd, breadcrumbJsonLd, servicesJsonLd } from "@/lib/json-ld";
 
 export const metadata = pageMetadata({
   title: "Solutions — AI Automation & Custom Business Software",
@@ -17,6 +18,7 @@ export const metadata = pageMetadata({
 export default function SolutionsPage() {
   return (
     <>
+      <JsonLd data={[breadcrumbJsonLd([{ name: "Solutions", path: "/solutions" }]), ...servicesJsonLd(solutions)]} />
       <PageHero
         eyebrow="Solutions"
         title={<>Practical software for <span className="accent-serif">real business problems</span></>}

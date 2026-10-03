@@ -5,6 +5,7 @@ import { PageHero } from "@/components/sections/page-hero";
 import { siteConfig } from "@/config/site";
 import { problemsToEnquiry } from "@/content/problems";
 import { pageMetadata } from "@/lib/seo";
+import { JsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 
 export const metadata = pageMetadata({
   title: "Contact — Discuss Your Business Problem",
@@ -38,6 +39,7 @@ export default async function ContactPage({ searchParams }: PageProps<"/contact"
 
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Contact", path: "/contact" }])} />
       <PageHero
         eyebrow="Contact"
         title={<>Tell us about your <span className="accent-serif">business problem</span></>}

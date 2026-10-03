@@ -18,6 +18,7 @@ import { solutions } from "@/content/solutions";
 import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
+import { JsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/json-ld";
 
 export const metadata = {
   ...pageMetadata({
@@ -34,6 +35,7 @@ const heroPoints = ["Working prototype in weeks", "You own the code", "Security 
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
       <InkBand>
         <Container className="grid gap-16 pt-20 pb-24 sm:pt-28 sm:pb-32 lg:grid-cols-[1.25fr_1fr] lg:items-center lg:gap-12">
           <div className="animate-rise">
@@ -54,7 +56,7 @@ export default function HomePage() {
                 </Link>
               </Button>
               <Button asChild variant="outline-ink" size="lg">
-                <Link href="/portfolio">Explore Our Work</Link>
+                <Link href="#work">Explore Our Work</Link>
               </Button>
             </div>
             <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-muted">

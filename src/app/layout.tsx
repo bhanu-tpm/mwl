@@ -9,9 +9,11 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+// Secondary fonts are not preloaded so they don't compete with the main text font.
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  preload: false,
 });
 
 // Used sparingly for italic accent words in headings.
@@ -19,7 +21,8 @@ const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
   subsets: ["latin"],
   weight: "400",
-  style: ["normal", "italic"],
+  style: "italic", // only the italic is used (accent-serif)
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -35,6 +38,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     locale: siteConfig.locale,
   },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {

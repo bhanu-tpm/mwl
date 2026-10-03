@@ -36,6 +36,14 @@ const NODES: Node[] = [
 const LETTERS_MWL =
   "M14.7 28.4V23.6a1.9 1.9 0 0 1 3.8 0V28.4M18.5 23.6a1.9 1.9 0 0 1 3.8 0V28.4M23.9 22l1.7 6.4 1.7-4.7 1.7 4.7 1.7-6.4M33.1 19.2V28.4";
 
+/** The mark as a standalone SVG string (for generated images such as Open Graph cards). */
+export function logoMarkSvg({ color = "#f5f4ef", accent = "#f2895c" } = {}) {
+  const rects = NODES.map(({ x, y, r, firing, inner }) =>
+    `<rect x="${x - r}" y="${y - r}" width="${r * 2}" height="${r * 2}" rx="${r * 0.25}" fill="${firing ? accent : color}" opacity="${inner && !firing ? 0.7 : 1}"/>`,
+  ).join("");
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><g fill="none" stroke="${color}" stroke-width="0.7"><circle cx="24" cy="24" r="${OUTER_RADIUS}" opacity="0.3"/><path d="${EDGES}" opacity="0.55"/><path d="${INNER_RING}" opacity="0.38"/></g><path d="${FIRING_EDGES}" fill="none" stroke="${accent}" stroke-width="0.95" stroke-linecap="round"/>${rects}<path d="${LETTERS_MWL}" fill="none" stroke="${color}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 24.4) scale(0.72) translate(-23.9 -23.8)"/></svg>`;
+}
+
 export function LogoMark({
   className,
   tone = "ink",
